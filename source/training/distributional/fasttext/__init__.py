@@ -1,0 +1,1 @@
+from source.training.distributional.fasttext.train_fasttext import *

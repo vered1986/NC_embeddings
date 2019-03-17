@@ -28,8 +28,8 @@ logger = logging.getLogger(__name__)
 
 import gensim
 
-from training.distributional import CorpusReader
-from training.distributional import save_gensim_vectors
+from source.training import CorpusReader
+from source.training import save_gensim_vectors
 
 
 def main():

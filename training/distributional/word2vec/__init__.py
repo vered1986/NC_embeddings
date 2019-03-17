@@ -1,1 +1,0 @@
-from training.distributional.word2vec.train_word2vec import *
