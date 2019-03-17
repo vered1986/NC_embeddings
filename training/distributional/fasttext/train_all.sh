@@ -10,7 +10,7 @@ do
     do
         for dim in "${dims[@]}"
         do
-            python training/distributional/train_fasttext.py \
+            python training/distributional/fasttext/train_fasttext.py \
                 output/en_corpus_ngrams_extended \
                 output/distributional/fasttext\_${algorithm}/${dim}d/win${window}/ \
                 --window_size ${window} --embedding_dim ${dim} --algorithm ${algorithm} &
