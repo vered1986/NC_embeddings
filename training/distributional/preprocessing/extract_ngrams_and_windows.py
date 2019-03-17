@@ -29,10 +29,10 @@ def main():
     variations = {}
     for nc in nc_vocab:
         w1, w2 = nc.split('\t')
-        variations[nc] = set(['_'.join((w1_form, w2_form)).lower()
-                              for w1_form, w2_form in itertools.product(
-                get_word_forms(w1)['n'], get_word_forms(w2)['n'])])
-        print(nc, variations[nc])
+        variations[nc.replace('\t', '_')] = \
+            set(['_'.join((w1_form, w2_form)).lower()
+                 for w1_form, w2_form in itertools.product(
+                    get_word_forms(w1)['n'], get_word_forms(w2)['n'])])
 
     logger.info('Counting the number of sentences in the corpus')
     num_instances = corpus_size(args.corpus)
@@ -59,10 +59,10 @@ def get_sentences_with_bigrams(sentence, variations):
     # Original sentence
     yield ' '.join(words)
 
-    bigrams = enumerate(['_'.join((w1, w2)) for w1, w2 in zip(words, words[1:])])
+    bigrams = ['_'.join((w1, w2)) for w1, w2 in zip(words, words[1:])]
 
     # Targets are bigrams, contexts are always unigrams
-    for i, bigram in bigrams:
+    for i, bigram in enumerate(bigrams):
         nc = variations.get(bigram, None)
         if nc is not None:
             yield ' '.join(words[:i] + [nc] + words[i+2:]).strip()
