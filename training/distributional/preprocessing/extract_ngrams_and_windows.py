@@ -2,8 +2,8 @@
 import argparse
 ap = argparse.ArgumentParser()
 ap.add_argument('corpus', help='The corpus file')
-ap.add_argument('nc_vocab', help='The vocabulary file')
 ap.add_argument('out_file', help='The output file')
+ap.add_argument('nc_vocab', help='The vocabulary file')
 args = ap.parse_args()
 
 import string

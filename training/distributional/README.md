@@ -36,7 +36,7 @@ considering also inflectional variants such as plurality:
 
 ```
 python -m training.distributional.preprocessing.extract_ngrams_and_windows.py \
-        data/nc_vocab.txt output/en_corpus; 
+        output/en_corpus data/nc_vocab.txt; 
 ```
 
 ## 3. Training Embeddings
