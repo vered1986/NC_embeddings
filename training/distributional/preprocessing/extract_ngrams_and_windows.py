@@ -32,8 +32,9 @@ def main():
         variations[nc] = set(['_'.join((w1_form, w2_form)).lower()
                               for w1_form, w2_form in itertools.product(
                 get_word_forms(w1)['n'], get_word_forms(w2)['n'])])
+        print(nc, variations[nc])
 
-    logger.info('Counting the number of instances in the corpus')
+    logger.info('Counting the number of sentences in the corpus')
     num_instances = corpus_size(args.corpus)
 
     logger.info('Processing...')

@@ -23,7 +23,7 @@ cat corpora/text/*/* > output/en_corpus;
 Finally, we tokenize the corpus using [spacy](https://spacy.io/):
 
 ```
-python -m training.distributional.preprocessing/tokenize_corpus.py output/en_corpus;
+python training/distributional/preprocessing/tokenize_corpus.py output/en_corpus;
 ```
 
 ## 2. Preparing the Compound-Aware Corpus
@@ -35,7 +35,7 @@ noun compounds as single tokens,
 considering also inflectional variants such as plurality: 
 
 ```
-python -m training.distributional.preprocessing.extract_ngrams_and_windows.py \
+python training/distributional/preprocessing/extract_ngrams_and_windows.py \
         output/en_corpus data/nc_vocab.txt; 
 ```
 
