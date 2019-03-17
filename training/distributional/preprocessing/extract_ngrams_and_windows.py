@@ -27,12 +27,12 @@ def main():
 
     logger.info('Computing variations...')
     variations = {}
-    for nc in nc_vocab:
+    for nc in tqdm.tqdm(nc_vocab):
         w1, w2 = nc.split('\t')
-        variations[nc.replace('\t', '_')] = \
-            set(['_'.join((w1_form, w2_form)).lower()
-                 for w1_form, w2_form in itertools.product(
-                    get_word_forms(w1)['n'], get_word_forms(w2)['n'])])
+        curr_nc = nc.replace('\t', '_')
+        for w1_form, w2_form in itertools.product(get_word_forms(w1)['n'], get_word_forms(w2)['n']):
+            curr_variation = '_'.join((w1_form, w2_form)).lower()
+            variations[curr_variation] = curr_nc
 
     logger.info('Counting the number of sentences in the corpus')
     num_instances = corpus_size(args.corpus)
