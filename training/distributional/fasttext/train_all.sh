@@ -10,6 +10,7 @@ do
     do
         for dim in "${dims[@]}"
         do
+            mkdir -p output/distributional/fasttext\_${algorithm}/${dim}d/win${window}/;
             python training/distributional/fasttext/train_fasttext.py \
                 output/en_corpus_ngrams_extended \
                 output/distributional/fasttext\_${algorithm}/${dim}d/win${window}/ \

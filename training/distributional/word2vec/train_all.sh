@@ -10,6 +10,7 @@ do
     do
         for dim in "${dims[@]}"
         do
+            mkdir -p output/distributional/word2vec\_${algorithm}/${dim}d/win${window}/;
             python training/distributional/word2vec/train_word2vec.py \
                 output/en_corpus_ngrams_extended \
                 output/distributional/word2vec\_${algorithm}/${dim}d/win${window}/ \
