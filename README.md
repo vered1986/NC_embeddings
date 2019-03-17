@@ -7,4 +7,5 @@ TBD
 - Python 3
 - argparse
 - [allennlp (0.8.1)](https://github.com/allenai/allennlp/)
+- [gensim](https://github.com/RaRe-Technologies/gensim)
 - [word_forms](https://github.com/gutfeeling/word_forms)
