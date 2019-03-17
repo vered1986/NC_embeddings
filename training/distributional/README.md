@@ -35,7 +35,7 @@ noun compounds as single tokens,
 considering also inflectional variants such as plurality: 
 
 ```
-python -m training.distributional.preprocessing.extract_ngrams_and_windows.py ~/corpora/text/[lang]_corpus_tokenized \
+python -m training.distributional.preprocessing.extract_ngrams_and_windows.py \
         data/nc_vocab.txt output/en_corpus; 
 ```
 

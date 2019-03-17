@@ -13,9 +13,7 @@ import itertools
 from word_forms.word_forms import get_word_forms
 
 import logging
-logging.basicConfig(
-    level=logging.INFO,
-    handlers=[logging.StreamHandler()])
+logging.basicConfig(level=logging.INFO, handlers=[logging.StreamHandler()])
 logger = logging.getLogger(__name__)
 
 
