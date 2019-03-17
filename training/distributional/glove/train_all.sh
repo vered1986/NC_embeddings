@@ -36,7 +36,7 @@ declare -a dims=(50 100 200 300)
 declare -a windows=(2 5 10)
 
 # Download the GloVe code
-git clone https://github.com/stanfordnlp/GloVe.git baselines/glove;
+git clone https://github.com/stanfordnlp/GloVe.git glove;
 
 # Compute co-occurrence matrix once for each window size
 for window in "${windows[@]}"

@@ -10,7 +10,7 @@ do
     do
         for dim in "${dims[@]}"
         do
-            python -m training.distributional.train_word2vec.py \
+            python training/distributional/train_word2vec.py \
                 output/en_corpus_ngrams_extended \
                 output/distributional/word2vec\_${algorithm}/${dim}d/win${window}/ \
                 --window_size ${window} --embedding_dim ${dim} --algorithm ${algorithm} &
