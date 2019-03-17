@@ -1,1 +1,1 @@
-from source.training.distributional import *
+from source.training import *

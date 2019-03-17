@@ -1,3 +1,3 @@
-from source.training.distributional.common import *
-from source.training.distributional.corpus_reader import *
-from source.training.distributional.word2vec.train_word2vec import *
+from source.training.distributional.fasttext import *
+from source.training.distributional.word2vec import *
+from source.training.distributional.preprocessing import *
