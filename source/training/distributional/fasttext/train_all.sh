@@ -11,8 +11,8 @@ do
         for dim in "${dims[@]}"
         do
             mkdir -p output/distributional/fasttext\_${algorithm}/${dim}d/win${window}/;
-            python -m source.training.distributional.fasttext.train_fasttext.py \
-                output/en_corpus_ngrams_extended \
+            python -m source.training.distributional.fasttext.train_fasttext \
+                output/en_corpus_bigrams \
                 output/distributional/fasttext\_${algorithm}/${dim}d/win${window}/ \
                 --window_size ${window} --embedding_dim ${dim} --algorithm ${algorithm} &
         done

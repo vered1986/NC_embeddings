@@ -44,7 +44,7 @@ do
     mkdir -p output/distributional/glove/cooc_win${window};
     mkdir -p output/distributional/glove/win${window};
     bash training/distributional/glove/compute_cooccurrence.sh \
-            output/en_corpus_ngrams_extended \
+            output/en_corpus_bigrams \
             output/distributional/glove/ ${window} &
 done
 wait
@@ -56,7 +56,7 @@ do
     do
         mkdir -p output/distributional/glove/${dim}d/win${window}/;
         bash output/distributional/glove/train.sh \
-                output/en_corpus_ngrams_extended \
+                output/en_corpus_bigrams \
                 output/distributional/glove/ ${window} ${dim} &
     done
     wait
