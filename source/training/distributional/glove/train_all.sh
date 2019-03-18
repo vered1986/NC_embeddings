@@ -20,7 +20,7 @@ do
     mkdir -p output/distributional/glove/win${window};
     bash source/training/distributional/glove/compute_cooccurrence.sh \
             output/en_corpus_bigrams \
-            output/distributional/glove/ ${window} &
+            output/distributional/glove ${window} &
 done
 wait
 
@@ -32,7 +32,7 @@ do
         mkdir -p output/distributional/glove/${dim}d/win${window}/;
         bash source/training/distributional/glove/train.sh \
                 output/en_corpus_bigrams \
-                output/distributional/glove/ ${window} ${dim} &
+                output/distributional/glove ${window} ${dim} &
     done
     wait
 
