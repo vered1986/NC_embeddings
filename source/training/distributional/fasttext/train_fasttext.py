@@ -51,8 +51,8 @@ def main():
     # Save
     try:
         logger.info(f'Saving the embeddings to {args.output_dir}')
-        model.save(args.output_dir + '/wv.bin')
-        save_gensim_vectors(model, os.path.join(args.output_dir, '/embeddings'))
+        model.save(os.path.join(args.output_dir, 'wv.bin'))
+        save_gensim_vectors(model, os.path.join(args.output_dir, 'embeddings.txt'))
     except Exception as err:
         logger.error(f'Failed to save model.\n{err}')
 

@@ -5,7 +5,7 @@
 # files under the current directory in a subdirectory called GloVe.
 # 2. Don't run compute_cooccurrence.sh in parallel for different window sizes, the temp files get mixed up.
 
-declare -a dims=(50 100 200 300)
+declare -a dims=(100 200 300)
 declare -a windows=(2 5 10)
 
 # Download the GloVe code
@@ -29,7 +29,7 @@ do
     # Train for each dimension
     for dim in "${dims[@]}"
     do
-        mkdir -p output/distributional/glove/${dim}d/win${window}/;
+        mkdir -p output/distributional/glove/win${window}/${dim}d;
         bash source/training/distributional/glove/train.sh \
                 output/en_corpus_bigrams \
                 output/distributional/glove ${window} ${dim} &
@@ -39,7 +39,7 @@ do
     # Gzip
     for dim in "${dims[@]}"
     do
-        gzip output/distributional/glove/${dim}d/win${window}/embeddings.txt &
+        gzip output/distributional/glove/win${window}/${dim}d/embeddings.txt &
     done
 done
 

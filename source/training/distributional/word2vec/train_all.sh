@@ -10,10 +10,10 @@ do
     do
         for dim in "${dims[@]}"
         do
-            mkdir -p output/distributional/word2vec\_${algorithm}/${dim}d/win${window}/;
+            mkdir -p output/distributional/word2vec\_${algorithm}/win${window}/${dim}d/;
             python -m source.training.distributional.word2vec.train_word2vec \
                 output/en_corpus_bigrams \
-                output/distributional/word2vec\_${algorithm}/${dim}d/win${window}/ \
+                output/distributional/word2vec\_${algorithm}/win${window}/${dim}d/ \
                 --window_size ${window} --embedding_dim ${dim} --algorithm ${algorithm} &
         done
         wait
