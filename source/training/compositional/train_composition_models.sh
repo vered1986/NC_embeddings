@@ -7,11 +7,11 @@ declare -a dims=(100 200 300)
 
 for algorithm in "${algorithms[@]}"
 do
-    for window in "${windows[@]}"
+    for embeddings in "${emb_algorithms[@]}"
     do
         for dim in "${dims[@]}"
         do
-            for embeddings in "${emb_algorithms[@]}"
+            for window in "${windows[@]}"
             do
                 allennlp train source/training/compositional/configurations/${algorithm}_${embeddings}_win${window}_${dim}d.json \
                 -s output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/ \
