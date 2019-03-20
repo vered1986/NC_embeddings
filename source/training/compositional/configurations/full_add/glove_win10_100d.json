@@ -21,7 +21,8 @@
       }
     },
     "composition_function": {
-      "type": "full_add_composition"
+      "type": "full_add_composition",
+      "input_dim": 100
     }
   },
   "iterator": {
