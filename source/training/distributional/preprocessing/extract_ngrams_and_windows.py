@@ -1,26 +1,26 @@
-# Command line arguments
-import argparse
-ap = argparse.ArgumentParser()
-ap.add_argument('corpus', help='The corpus file')
-ap.add_argument('out_file', help='The output file')
-ap.add_argument('nc_vocab', help='The vocabulary file')
-args = ap.parse_args()
-
 import os
 import tqdm
 import string
 import codecs
+import logging
+import argparse
 import itertools
 import subprocess
 
 from word_forms.word_forms import get_word_forms
 
-import logging
 logging.basicConfig(level=logging.INFO, handlers=[logging.StreamHandler()])
 logger = logging.getLogger(__name__)
 
 
 def main():
+    # Command line arguments
+    ap = argparse.ArgumentParser()
+    ap.add_argument('corpus', help='The corpus file')
+    ap.add_argument('out_file', help='The output file')
+    ap.add_argument('nc_vocab', help='The vocabulary file')
+    args = ap.parse_args()
+
     logger.info('Reading the vocabulary')
     with codecs.open(args.nc_vocab, 'r', 'utf-8') as f_in:
         nc_vocab = frozenset([line.strip() for line in f_in])

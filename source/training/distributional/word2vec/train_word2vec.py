@@ -1,38 +1,38 @@
-# Command line arguments
-import argparse
-ap = argparse.ArgumentParser()
-ap.add_argument('--iter', type=int, help='Number of epochs', default=5)
-ap.add_argument('--window_size', help='Context window size', type=int, default=2)
-ap.add_argument('--embedding_dim', help='Embeddings dimension', type=int, default=100)
-ap.add_argument('--workers', help='Number of parallel workers', type=int, default=16)
-ap.add_argument('--algorithm', help='Skip-gram (sg) or CBOW (cbow)', type=str, default='sg')
-ap.add_argument('--min_count', help='Minimum target word occurrences in the corpus', type=int, default=1)
-ap.add_argument('corpus', help='The corpus file')
-ap.add_argument('output_dir', help='Where to store the word embeddings files (.npy and .vocab)')
-args = ap.parse_args()
-
-# Log
 import os
-logdir = os.path.abspath(args.output_dir)
-if not os.path.exists(logdir):
-    os.mkdir(logdir)
-
-import logging
-logging.basicConfig(
-    level=logging.INFO,
-    handlers=[
-        logging.FileHandler('{}/log.txt'.format(logdir)),
-        logging.StreamHandler()
-    ])
-logger = logging.getLogger(__name__)
-
 import gensim
+import logging
+import argparse
 
 from source.training.distributional.corpus_reader import CorpusReader
 from source.training.distributional.common import save_gensim_vectors
 
 
 def main():
+    # Command line arguments
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--iter', type=int, help='Number of epochs', default=5)
+    ap.add_argument('--window_size', help='Context window size', type=int, default=2)
+    ap.add_argument('--embedding_dim', help='Embeddings dimension', type=int, default=100)
+    ap.add_argument('--workers', help='Number of parallel workers', type=int, default=16)
+    ap.add_argument('--algorithm', help='Skip-gram (sg) or CBOW (cbow)', type=str, default='sg')
+    ap.add_argument('--min_count', help='Minimum target word occurrences in the corpus', type=int, default=1)
+    ap.add_argument('corpus', help='The corpus file')
+    ap.add_argument('output_dir', help='Where to store the word embeddings files (.npy and .vocab)')
+    args = ap.parse_args()
+
+    # Log
+    logdir = os.path.abspath(args.output_dir)
+    if not os.path.exists(logdir):
+        os.mkdir(logdir)
+
+    logging.basicConfig(
+        level=logging.INFO,
+        handlers=[
+            logging.FileHandler('{}/log.txt'.format(logdir)),
+            logging.StreamHandler()
+        ])
+    logger = logging.getLogger(__name__)
+
     sentence_iter = CorpusReader(args.corpus)
 
     logger.info('Training...')

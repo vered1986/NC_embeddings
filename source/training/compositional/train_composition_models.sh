@@ -13,9 +13,9 @@ do
         do
             for embeddings in "${emb_algorithms[@]}"
             do
-                allennlp train training/compositional/configurations/${algorithm}_${embeddings}_win${window}_${dim}d.json \
+                allennlp train source/training/compositional/configurations/${algorithm}_${embeddings}_win${window}_${dim}d.json \
                 -s output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/ \
-                --include-package NC_embeddings &
+                --include-package source &
             done
             wait
         done

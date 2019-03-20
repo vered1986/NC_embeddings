@@ -1,12 +1,7 @@
-# Command line arguments
-import argparse
-ap = argparse.ArgumentParser()
-ap.add_argument('corpus', help='The corpus file')
-args = ap.parse_args()
-
 import spacy
 import codecs
 import logging
+import argparse
 
 logger = logging.getLogger(__name__)
 
@@ -15,6 +10,10 @@ def main():
     """
     Gets a Wikipedia corpus (converted to text using WikiExtractor) and tokenizes it.
     """
+    ap = argparse.ArgumentParser()
+    ap.add_argument('corpus', help='The corpus file')
+    args = ap.parse_args()
+
     nlp = spacy.load('en', disable=['parser'])
     nlp.add_pipe(nlp.create_pipe('sentencizer'))
 

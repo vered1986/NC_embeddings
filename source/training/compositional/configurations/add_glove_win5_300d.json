@@ -15,7 +15,7 @@
     "text_field_embedder": {
       "tokens": {
         "type": "embedding",
-        "pretrained_file": "output/distributional/glove/300d/win5/embeddings.txt.gz",
+        "pretrained_file": "output/distributional/glove/win5/300d/embeddings.txt.gz",
         "embedding_dim": 300,
         "trainable": false
       }
