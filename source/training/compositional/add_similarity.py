@@ -25,4 +25,4 @@ class AddSimilarity(SimilarityFunction):
 
     @overrides
     def forward(self, x: torch.Tensor, y: torch.Tensor) -> torch.Tensor:
-        return torch.matmul(x, self._a) + torch.matmul(y, self._b)
+        return torch.mul(x, self._a) + torch.mul(y, self._b)
