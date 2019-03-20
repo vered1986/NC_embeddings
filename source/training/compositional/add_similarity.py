@@ -20,9 +20,8 @@ class AddSimilarity(SimilarityFunction):
         self.reset_parameters()
 
     def reset_parameters(self):
-        std = math.sqrt(6 / (self._weight_vector.size(0) + 1))
-        self._a.data.uniform_(-std, std)
-        self._b.data.uniform_(-std, std)
+        self._a.data.uniform_(-1, 1)
+        self._b.data.uniform_(-1, 1)
 
     @overrides
     def forward(self, x: torch.Tensor, y: torch.Tensor) -> torch.Tensor:
