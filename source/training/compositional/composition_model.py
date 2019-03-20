@@ -29,7 +29,6 @@ class CompositionModel(Model):
         ``LinearSimilarity'' with activation: to compute f(xy) = g(W * [x ; y] + b),
         where g is a non-linearity and W is a matrix.
     """
-
     def __init__(self, vocab: Vocabulary,
                  text_field_embedder: TextFieldEmbedder,
                  composition_function: SimilarityFunction) -> None:
