@@ -13,7 +13,7 @@ do
         do
             for window in "${windows[@]}"
             do
-                allennlp train source/training/compositional/configurations/${algorithm}_${embeddings}_win${window}_${dim}d.json \
+                allennlp train source/training/compositional/configurations/${algorithm}/${embeddings}_win${window}_${dim}d.json \
                 -s output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/ \
                 --include-package source &
             done
