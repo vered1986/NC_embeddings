@@ -33,10 +33,10 @@ class FullAddSimilarity(SimilarityFunction):
     @overrides
     def forward(self, x: torch.Tensor, y: torch.Tensor) -> torch.Tensor:
         # If more than two words, take the average of each constituent
-        if len(x.size()) > 2:
-            x = torch.mean(x, dim=1).squeeze()
+        if x.size()[1] > 1:
+            x = torch.mean(x, dim=1).unsqueeze(1)
 
-        if len(y.size()) > 2:
-            y = torch.mean(x, dim=1).squeeze()
+        if y.size()[1] > 1:
+            y = torch.mean(x, dim=1).unsqueeze(1)
 
         return torch.matmul(x, self._A) + torch.matmul(y, self._B)
