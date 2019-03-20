@@ -33,14 +33,17 @@ class NCDatasetReader(DatasetReader):
         Passed to ``DatasetReader``.  If this is ``True``, training will start sooner, but will
         take longer per batch.  This also allows training with datasets that are too large to fit
         in memory.
+    include_trigrams: ``boolean`` - whether to include instances of more than two words.
     """
     def __init__(self,
                  token_indexers: Dict[str, TokenIndexer],
                  lazy: bool = False,
-                 tokenizer: Tokenizer = None) -> None:
+                 tokenizer: Tokenizer = None,
+                 include_trigrams=False) -> None:
         super().__init__(lazy)
         self._token_indexers = token_indexers
         self._tokenizer = tokenizer or WordTokenizer()
+        self.include_trigrams = include_trigrams
 
     @overrides
     def _read(self, file_path):
@@ -53,7 +56,9 @@ class NCDatasetReader(DatasetReader):
 
                 nc = nc.lower().replace('\t', '_')
                 w1, w2 = nc.split('_')
-                yield self.text_to_instance(nc, w1, w2)
+                
+                if self.include_trigrams or ' ' not in nc:
+                    yield self.text_to_instance(nc, w1, w2)
 
     @overrides
     def text_to_instance(self, nc: str, w1: str, w2: str) -> Instance:
