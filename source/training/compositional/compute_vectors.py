@@ -1,4 +1,3 @@
-import json
 import tqdm
 import codecs
 import logging
@@ -10,6 +9,11 @@ from allennlp.models.archival import load_archive
 from allennlp.predictors.predictor import Predictor
 
 from source.training.compositional.nc_dataset_reader import NCDatasetReader
+
+# For registration purposes - don't delete
+from source.training.compositional.add_similarity import *
+from source.training.compositional.composition_model import *
+from source.training.compositional.full_add_similarity import *
 
 logger = logging.getLogger(__name__)
 
@@ -35,8 +39,10 @@ def main():
     vectors = []
     with codecs.open(args.dataset, 'r', 'utf-8') as f_in:
         for line in tqdm.tqdm(f_in):
-            example = json.loads(line.strip())
-            vectors.append(predictor.predict(example['nc'])['vector'])
+            nc = line.lower().replace('\t', '_')
+            w1, w2 = nc.split('_')
+            instance = reader.text_to_instance(nc, w1, w2)
+            vectors.append(predictor.predict_instance(instance)['vector'])
 
     logger.info(f'Saving vectors to {args.out_vector_file}')
     vectors = np.vstack(vectors)

@@ -5,9 +5,9 @@ from overrides import overrides
 
 from allennlp.data.instance import Instance
 from allennlp.common.file_utils import cached_path
-from allennlp.data.token_indexers import TokenIndexer
 from allennlp.data.tokenizers import Tokenizer, WordTokenizer
 from allennlp.data.dataset_readers.dataset_reader import DatasetReader
+from allennlp.data.token_indexers import TokenIndexer, SingleIdTokenIndexer
 from allennlp.data.fields import LabelField, TextField, IndexField, SpanField
 
 logger = logging.getLogger(__name__)
@@ -39,7 +39,7 @@ class NCDatasetReader(DatasetReader):
                  lazy: bool = False,
                  tokenizer: Tokenizer = None) -> None:
         super().__init__(lazy)
-        self._token_indexers = token_indexers
+        self.token_indexers = token_indexers or {"tokens": SingleIdTokenIndexer()}
         self._tokenizer = tokenizer or WordTokenizer()
 
     @overrides
