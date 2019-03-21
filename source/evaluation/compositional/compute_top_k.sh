@@ -15,6 +15,7 @@ do
             do
                 python -m source.evaluation.compositional.top_k \
                         output/distributional/${embeddings}/win${window}/${dim}d/embeddings.txt.gz \
+                        ${dim} \
                         output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/test_vectors.npy \
                         data/ncs_test.txt > output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/test_top_k.txt &
             done

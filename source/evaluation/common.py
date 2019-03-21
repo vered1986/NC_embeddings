@@ -26,34 +26,30 @@ def load_binary_embeddings(embeddings_file, normalize=False):
     return wv
 
 
-def load_text_embeddings(file_name, normalize=False):
+def load_text_embeddings(file_name, embedding_dim, normalize=False):
     """
     Load the pre-trained embeddings from a file
     :param file_name: the embeddings file
     :return: the vocabulary and the word vectors
     """
-    with codecs.getreader('utf-8')(gzip.open(file_name, 'rb')) as f_in:
-        lines = [line.strip() for line in f_in]
-
-    embedding_dim = len(lines[0].split(' ')) - 1
-    logger.info(f'Emedding dim: {embedding_dim}')
     words = []
     vectors = []
 
-    for line in lines:
-        fields = line.strip().split(' ')
-        if len(fields) == embedding_dim + 1:
-            try:
-                word = fields[0]
-                vector = fields[1:]
-                vectors.append(np.asarray(vector, dtype='float32'))
-                words.append(word)
-            except:
-                logger.warning(f'Error in line: {line.strip()}')
-                if len(vectors) > len(words):
-                    vectors = vectors[:-1]
-        else:
-            logger.warning(f'Wrong number of fields in line: {len(fields)}')
+    with codecs.getreader('utf-8')(gzip.open(file_name, 'rb')) as f_in:
+        for line in f_in:
+            fields = line.strip().split(' ')
+            if len(fields) == embedding_dim + 1:
+                try:
+                    word = fields[0]
+                    vector = fields[1:]
+                    vectors.append(np.asarray(vector, dtype='float32'))
+                    words.append(word)
+                except:
+                    logger.warning(f'Error in line: {line.strip()}')
+                    if len(vectors) > len(words):
+                        vectors = vectors[:-1]
+            else:
+                logger.warning(f'Wrong number of fields in line: {len(fields)}')
 
     wv = np.vstack(vectors)
 
