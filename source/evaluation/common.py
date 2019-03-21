@@ -1,3 +1,4 @@
+import gzip
 import logging
 
 import numpy as np
