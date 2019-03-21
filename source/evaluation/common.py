@@ -36,11 +36,21 @@ def load_text_embeddings(file_name, normalize=False):
         lines = [line.strip() for line in f_in]
 
     embedding_dim = len(lines[0].split()) - 1
-    words, vectors = zip(*[line.strip().split(' ', 1)
-                           for line in lines
-                           if len(line.split()) == embedding_dim + 1])
-    wv = np.loadtxt(vectors)
+    words = []
+    vectors = []
 
+    for line in lines:
+        word, vector = line.strip().split(' ', 1)
+        if len(vector) == embedding_dim:
+            try:
+                vectors.append(np.asarray(vector, dtype='float32'))
+                words.append(word)
+            except:
+                if len(vectors) > len(words):
+                    vectors = vectors[:-1]
+
+    wv = np.vstack(vectors)
+    
     # Normalize each row (word vector) in the matrix to sum-up to 1
     if normalize:
         row_norm = np.sum(np.abs(wv) ** 2, axis=-1) ** (1. / 2)
