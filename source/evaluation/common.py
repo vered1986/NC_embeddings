@@ -35,7 +35,8 @@ def load_text_embeddings(file_name, normalize=False):
     with codecs.getreader('utf-8')(gzip.open(file_name, 'rb')) as f_in:
         lines = [line.strip() for line in f_in]
 
-    embedding_dim = len(lines[0].split()) - 1
+    embedding_dim = len(lines[0].split(' ')) - 1
+    logger.info(f'Emedding dim: {embedding_dim}')
     words = []
     vectors = []
 
@@ -52,7 +53,7 @@ def load_text_embeddings(file_name, normalize=False):
                 if len(vectors) > len(words):
                     vectors = vectors[:-1]
         else:
-            logger.warning(f'Wrong number of fields in line: {line.strip()}')
+            logger.warning(f'Wrong number of fields in line: {len(fields)}')
 
     wv = np.vstack(vectors)
 
