@@ -22,7 +22,9 @@
     },
     "composition_function": {
       "type": "linear",
-      "activation": "tanh"
+      "activation": "tanh",
+      "tensor_1_dim": 100,
+      "tensor_2_dim": 100
     }
   },
   "iterator": {
