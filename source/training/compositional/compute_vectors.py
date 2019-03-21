@@ -25,7 +25,7 @@ def main():
     """
     ap = argparse.ArgumentParser()
     ap.add_argument('composition_model_path', help='The composition model file (model.tar.gz)')
-    ap.add_argument('dataset', help='The dataset jsonl file')
+    ap.add_argument('dataset', help='The dataset file')
     ap.add_argument('out_vector_file', help='Where to save the npy file')
     args = ap.parse_args()
 
