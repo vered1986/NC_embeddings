@@ -39,7 +39,7 @@ class NCDatasetReader(DatasetReader):
                  lazy: bool = False,
                  tokenizer: Tokenizer = None) -> None:
         super().__init__(lazy)
-        self.token_indexers = token_indexers or {"tokens": SingleIdTokenIndexer()}
+        self._token_indexers = token_indexers or {"tokens": SingleIdTokenIndexer()}
         self._tokenizer = tokenizer or WordTokenizer()
 
     @overrides
