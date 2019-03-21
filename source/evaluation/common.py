@@ -7,6 +7,8 @@ import numpy as np
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
+codecs.register_error('strict', codecs.replace_errors)
+
 
 def load_binary_embeddings(embeddings_file, normalize=False):
     """
