@@ -40,15 +40,19 @@ def load_text_embeddings(file_name, normalize=False):
     vectors = []
 
     for line in lines:
-        word, vector = line.strip().split(' ', 1)
-        if len(vector) == embedding_dim:
+        fields = line.strip().split(' ')
+        if len(fields) == embedding_dim + 1:
             try:
+                word = fields[0]
+                vector = fields[1:]
                 vectors.append(np.asarray(vector, dtype='float32'))
                 words.append(word)
             except:
                 logger.warning(f'Error in line: {line.strip()}')
                 if len(vectors) > len(words):
                     vectors = vectors[:-1]
+        else:
+            logger.warning(f'Wrong number of fields in line: {line.strip()}')
 
     wv = np.vstack(vectors)
 
