@@ -1,4 +1,5 @@
 import gzip
+import codecs
 import logging
 
 import numpy as np
@@ -29,11 +30,11 @@ def load_text_embeddings(file_name, normalize=False):
     :param file_name: the embeddings file
     :return: the vocabulary and the word vectors
     """
-    with gzip.open(file_name, 'rb') as f_in:
+    with codecs.getreader('utf-8')(gzip.open(file_name), 'rb', errors='replace') as f_in:
         lines = [line.strip() for line in f_in]
 
     embedding_dim = len(lines[0].split()) - 1
-    words, vectors = zip(*[line.decode('utf-8').strip().split(' ', 1)
+    words, vectors = zip(*[line.strip().split(' ', 1)
                            for line in lines
                            if len(line.split()) == embedding_dim + 1])
     wv = np.loadtxt(vectors)
