@@ -25,7 +25,7 @@ def main():
 
     for nc in ncs:
         print(nc)
-        for other, score in most_similar_word(index2word, word2index, wv, f'comp_{nc}', k=20):
+        for other, score in most_similar_word(index2word, word2index, wv, nc, k=20):
             print('\t'.join((other, '{:.3f}'.format(score))))
 
         print('')
