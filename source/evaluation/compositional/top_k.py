@@ -4,8 +4,6 @@ import argparse
 
 import numpy as np
 
-from allennlp.common.file_utils import get_from_cache
-
 from source.evaluation.common import load_binary_embeddings, most_similar_word_by_vector, load_text_embeddings
 
 
@@ -20,8 +18,7 @@ def main():
     args = ap.parse_args()
 
     logger.info(f'Loading distributional vectors from {args.orig_emb_file}')
-    local_emb_file = get_from_cache(args.orig_emb_file)
-    dist_wv, dist_index2word = load_text_embeddings(local_emb_file, normalize=True)
+    dist_wv, dist_index2word = load_text_embeddings(args.orig_emb_file, normalize=True)
 
     logger.info(f'Loading compositional vectors from {args.nc_emb_file}')
     comp_wv = load_binary_embeddings(args.nc_emb_file, normalize=True)
