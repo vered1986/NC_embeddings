@@ -4,8 +4,8 @@ import logging
 
 import numpy as np
 
+logging.basicConfig(level=logging.INFO, handlers=[logging.StreamHandler()])
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
 
 codecs.register_error('strict', codecs.replace_errors)
 
@@ -46,11 +46,12 @@ def load_text_embeddings(file_name, normalize=False):
                 vectors.append(np.asarray(vector, dtype='float32'))
                 words.append(word)
             except:
+                logger.warning(f'Error in line: {line.strip()}')
                 if len(vectors) > len(words):
                     vectors = vectors[:-1]
 
     wv = np.vstack(vectors)
-    
+
     # Normalize each row (word vector) in the matrix to sum-up to 1
     if normalize:
         row_norm = np.sum(np.abs(wv) ** 2, axis=-1) ** (1. / 2)

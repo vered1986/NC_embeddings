@@ -7,6 +7,7 @@ import numpy as np
 from source.evaluation.common import load_binary_embeddings, load_text_embeddings, most_similar_word
 
 
+logging.basicConfig(level=logging.INFO, handlers=[logging.StreamHandler()])
 logger = logging.getLogger(__name__)
 
 
