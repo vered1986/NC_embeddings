@@ -70,5 +70,6 @@ class CompositionModel(Model):
         nc_cmp = self.composition_function(w1_emb, w2_emb)
 
         # Compute the loss
-        output_dict = {'loss': self.loss(nc_obs, nc_cmp)}
+        output_dict = {'loss': self.loss(nc_obs, nc_cmp),
+                       'vector': nc_cmp}
         return output_dict

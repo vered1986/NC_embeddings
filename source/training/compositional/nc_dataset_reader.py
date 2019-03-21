@@ -35,7 +35,7 @@ class NCDatasetReader(DatasetReader):
         in memory.
     """
     def __init__(self,
-                 token_indexers: Dict[str, TokenIndexer],
+                 token_indexers: Dict[str, TokenIndexer] = None,
                  lazy: bool = False,
                  tokenizer: Tokenizer = None) -> None:
         super().__init__(lazy)

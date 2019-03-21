@@ -30,5 +30,5 @@ class AddSimilarity(SimilarityFunction):
 
         if y.size()[1] > 1:
             y = torch.mean(x, dim=1).unsqueeze(1)
-            
+
         return torch.mul(x, self._a) + torch.mul(y, self._b)
