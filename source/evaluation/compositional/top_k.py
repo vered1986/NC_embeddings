@@ -4,7 +4,7 @@ import argparse
 
 import numpy as np
 
-from source.evaluation.common import load_binary_embeddings, most_similar_word_by_vector, load_text_embeddings
+from source.evaluation.common import load_binary_embeddings, load_text_embeddings, most_similar_word
 
 
 logger = logging.getLogger(__name__)
@@ -33,8 +33,7 @@ def main():
 
     for nc in comp_index2word:
         print(nc)
-        vec = wv[word2index[f'comp_{nc}'], :]
-        for other, score in most_similar_word_by_vector(index2word, wv, vec, k=20):
+        for other, score in most_similar_word(index2word, word2index, wv, f'comp_{nc}', k=20):
             print('\t'.join((other, '{:.3f}'.format(score))))
 
         print('')

@@ -68,24 +68,3 @@ def most_similar_word(index2word, word2index, wv, w, k=10):
     words = [(index2word[i], distance[i]) for i in max_indices if i != index]
 
     return words
-
-
-def most_similar_word_by_vector(index2word, wv, vec, k=10):
-    """
-    Returns the k most similar words to the vector vec
-    :param index2word: the list of vocabulary words
-    :param wv: the word embeddings
-    :param vec: the target vector
-    :param k: the number of words to return
-    :return: the k most similar words to w
-    """
-    # Normalize the input vector
-    vec /= np.sum(np.abs(vec) ** 2, axis=-1) ** (1. / 2)
-
-    # Apply matrix-vector dot product to get the distance of w from all the other vectors
-    distance = np.dot(wv, vec)
-
-    max_indices = (-distance).argsort()[:k + 1]
-    words = [(index2word[i], distance[i]) for i in max_indices]
-
-    return words
