@@ -21,10 +21,9 @@
       }
     },
     "composition_function": {
-      "type": "linear",
+      "type": "matrix_composition",
       "activation": "tanh",
-      "tensor_1_dim": 100,
-      "tensor_2_dim": 100
+      "input_dim": 100
     }
   },
   "iterator": {

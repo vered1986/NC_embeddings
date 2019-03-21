@@ -21,7 +21,7 @@
       }
     },
     "composition_function": {
-      "type": "linear",
+      "type": "matrix_composition",
       "activation": "tanh"
     }
   },
