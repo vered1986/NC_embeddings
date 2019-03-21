@@ -22,7 +22,8 @@
     },
     "composition_function": {
       "type": "matrix_composition",
-      "activation": "tanh"
+      "activation": "tanh",
+      "input_dim": 100
     }
   },
   "iterator": {

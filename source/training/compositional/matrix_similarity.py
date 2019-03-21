@@ -25,8 +25,7 @@ class MatrixSimilarity(SimilarityFunction):
                  activation : str = 'tanh') -> None:
         super(MatrixSimilarity, self).__init__()
         self._combination = "x,y"
-        combined_dim = util.get_combined_dim(self._combination, [input_dim, input_dim])
-        self._weight_vector = Parameter(torch.Tensor(combined_dim))
+        self._weight_vector = Parameter(torch.Tensor(input_dim * 2, input_dim))
         self._activation = Activation.by_name(activation)()
         self.reset_parameters()
 
@@ -42,6 +41,6 @@ class MatrixSimilarity(SimilarityFunction):
         if y.size()[1] > 1:
             y = torch.mean(x, dim=1).unsqueeze(1)
 
-        combined_tensors = util.combine_tensors(self._combination, [x, y])
-        dot_product = torch.matmul(combined_tensors, self._weight_vector)
-        return self._activation(dot_product)
+        combined = util.combine_tensors(self._combination, [x, y])
+        product = torch.matmul(combined, self._weight_vector)
+        return self._activation(product)
