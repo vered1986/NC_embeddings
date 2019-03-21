@@ -26,7 +26,7 @@ def main():
     comp_wv = load_binary_embeddings(args.nc_emb_file, normalize=True)
 
     with codecs.open(args.nc_file, 'r', 'utf-8') as f_in:
-        comp_index2word = [line.lower().replace('\t', '_') for line in f_in]
+        comp_index2word = [line.strip().lower().replace('\t', '_') for line in f_in]
 
     logger.info('Uniting vectors')
     wv = np.vstack([dist_wv, comp_wv])
