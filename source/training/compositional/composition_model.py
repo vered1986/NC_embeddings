@@ -26,7 +26,7 @@ class CompositionModel(Model):
     Choose between:
         ``AddSimilarity'': to compute f(xy) = a * x + b * y, where a and b are scalars.
         ``FullAddSimilarity'': to compute f(xy) = A * x + B * y, where A and B are matrices.
-        ``LinearSimilarity'' with activation: to compute f(xy) = g(W * [x ; y] + b),
+        ``MatrixSimilarity'' to compute f(xy) = tanh(W * [x ; y]),
         where g is a non-linearity and W is a matrix.
     """
     def __init__(self, vocab: Vocabulary,
