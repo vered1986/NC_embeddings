@@ -15,7 +15,7 @@ from allennlp.data.fields import LabelField, TextField, IndexField, SpanField
 logger = logging.getLogger(__name__)
 
 
-@DatasetReader.register("nc_data_reader")
+@DatasetReader.register("nc_paraphrases_data_reader")
 class NCDatasetReader(DatasetReader):
     """
     Reads a jsonl file containing a list of noun compounds, each with paraphrases
