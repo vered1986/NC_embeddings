@@ -61,16 +61,16 @@ class CompositionModel(Model):
         """
         # Embed and encode the noun compound
         nc_emb = self.text_field_embedder(nc)
-        nc_mask = util.get_text_field_mask(nc_emb)
-        nc_enc = self.encoder(nc_emb, nc_mask).data
+        nc_mask = util.get_text_field_mask(nc)
+        nc_enc = self.encoder(nc_emb, nc_mask)
 
         output_dict = {'vector': nc_enc}
 
         # Embed and encode the paraphrase
         if paraphrase:
             paraphrase_emb = self.text_field_embedder(paraphrase)
-            paraphrase_mask = util.get_text_field_mask(paraphrase_emb)
-            paraphrase_enc = self.encoder(paraphrase_emb, paraphrase_mask).data
+            paraphrase_mask = util.get_text_field_mask(paraphrase)
+            paraphrase_enc = self.encoder(paraphrase_emb, paraphrase_mask)
 
             # Compute the loss
             output_dict['loss'] = self.loss(nc_enc, paraphrase_enc)
