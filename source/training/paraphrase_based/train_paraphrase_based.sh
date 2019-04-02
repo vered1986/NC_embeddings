@@ -1,21 +1,23 @@
 #!/bin/bash
 
+declare -a algorithms=(cooccurrence backtranslation)
 declare -a emb_algorithms=(word2vec_sg word2vec_cbow glove fasttext_sg fasttext_cbow)
 declare -a windows=(2 5 10)
 declare -a dims=(100 200 300)
 
-for embeddings in "${emb_algorithms[@]}"
+for algorithm in "${algorithms[@]}"
 do
-    for dim in "${dims[@]}"
+    for embeddings in "${emb_algorithms[@]}"
     do
-        for window in "${windows[@]}"
+        for dim in "${dims[@]}"
         do
-            allennlp train source/training/paraphrase_based/configurations/${embeddings}_win${window}_${dim}d.json \
-            -s output/paraphrase_based/${embeddings}/win${window}/${dim}d/ \
-            --include-package source &
+            for window in "${windows[@]}"
+            do
+                allennlp train source/training/paraphrase_based/configurations/${algorithm}/${embeddings}_win${window}_${dim}d.json \
+                -s output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/ \
+                --include-package source &
+            done
+            wait
         done
-        wait
     done
 done
-
-
