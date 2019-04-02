@@ -24,12 +24,12 @@ class CompositionModel(Model):
         A Vocabulary, required in order to compute sizes for input/output projections.
     text_field_embedder : ``TextFieldEmbedder``, required
         Used to embed the ``tokens`` ``TextField`` we get as input to the model.
-    encoder : ``Seq2VecEncoder``, required
+    encoder : ``Seq2VecEncoder``, optional
         The RNN encoder that returns a vector given a list of vectors.
     """
     def __init__(self, vocab: Vocabulary,
                  text_field_embedder: TextFieldEmbedder,
-                 encoder: Optional[Seq2VecEncoder] = None,) -> None:
+                 encoder: Optional[Seq2VecEncoder] = None) -> None:
         super(CompositionModel, self).__init__(vocab)
 
         self.text_field_embedder = text_field_embedder
