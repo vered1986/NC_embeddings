@@ -63,6 +63,8 @@ class NCDatasetReader(DatasetReader):
         w1_field = TextField(tokenized_w1, self._token_indexers)
         tokenized_w2 = self._tokenizer.tokenize(w2)
         w2_field = TextField(tokenized_w2, self._token_indexers)
+        tokenized_nc_seq = self._tokenizer.tokenize(nc.replace('_', ' '))
+        nc_seq_field = TextField(tokenized_nc_seq, self._token_indexers)
 
-        fields = {'nc': nc_field, 'w1': w1_field, 'w2': w2_field}
+        fields = {'nc': nc_field, 'w1': w1_field, 'w2': w2_field, 'nc_seq': nc_seq_field}
         return Instance(fields)

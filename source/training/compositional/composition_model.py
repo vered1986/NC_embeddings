@@ -55,7 +55,8 @@ class CompositionModel(Model):
     def forward(self,  # type: ignore
                 nc: Dict[str, torch.LongTensor],
                 w1: Dict[str, torch.LongTensor],
-                w2: Dict[str, torch.LongTensor]) -> Dict[str, torch.Tensor]:
+                w2: Dict[str, torch.LongTensor],
+                nc_seq: Dict[str, torch.LongTensor]) -> Dict[str, torch.Tensor]:
         # pylint: disable=arguments-differ
         """
         Parameters
@@ -65,6 +66,8 @@ class CompositionModel(Model):
         w1 : Dict[str, Variable], required
             The output of ``TextField.as_array()``.
         w2 : Dict[str, Variable], required
+            The output of ``TextField.as_array()``.
+        nc_seq : Dict[str, Variable], required
             The output of ``TextField.as_array()``.
 
         Returns
@@ -82,8 +85,9 @@ class CompositionModel(Model):
         if self.composition_function:
             nc_cmp = self.composition_function(w1_emb, w2_emb)
         else:
-            nc_mask = util.get_text_field_mask(nc)
-            nc_cmp = self.encoder(nc_obs, nc_mask)
+            nc_emb = self.text_field_embedder(nc_seq)
+            nc_mask = util.get_text_field_mask(nc_emb)
+            nc_cmp = self.encoder(nc_emb, nc_mask)
 
         # Compute the loss
         output_dict = {'loss': self.loss(nc_obs, nc_cmp),
