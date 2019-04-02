@@ -1,6 +1,6 @@
 {
   "dataset_reader": {
-    "type": "nc_data_reader",
+    "type": "nc_paraphrases_data_reader",
     "token_indexers": {
       "tokens": {
         "type": "single_id",

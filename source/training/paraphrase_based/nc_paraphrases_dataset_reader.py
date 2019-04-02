@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 @DatasetReader.register("nc_paraphrases_data_reader")
-class NCDatasetReader(DatasetReader):
+class NCParaphraseDatasetReader(DatasetReader):
     """
     Reads a jsonl file containing a list of noun compounds, each with paraphrases
     obtained from back-translation,
