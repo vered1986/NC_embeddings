@@ -86,7 +86,7 @@ class CompositionModel(Model):
             nc_cmp = self.composition_function(w1_emb, w2_emb)
         else:
             nc_emb = self.text_field_embedder(nc_seq)
-            nc_mask = util.get_text_field_mask(nc_emb)
+            nc_mask = util.get_text_field_mask(nc_seq)
             nc_cmp = self.encoder(nc_emb, nc_mask)
 
         # Compute the loss

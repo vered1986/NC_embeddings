@@ -22,7 +22,6 @@ fan	fatality
 radio	network
 cigarette	tax
 oil	export
-bond trading	conversation
 cancer	research
 school	aid
 tape	collection
@@ -606,7 +605,6 @@ tax	level
 investment	rating
 room	service
 information	booth
-foreign exchange	market
 laboratory	testing
 quiz	show
 summer	movie
@@ -805,7 +803,6 @@ advance	sale
 ankle	sprain
 fall	lineup
 aluminum	company
-life insurance	policyholder
 air	strike
 needle	program
 bargaining	table
@@ -916,7 +913,6 @@ passenger	door
 street	crime
 magazine	writer
 supply	problem
-root canal	work
 information	site
 tea	forum
 meat	packer
@@ -926,7 +922,6 @@ traffic	growth
 risk	group
 mass	organization
 computer	security
-banquet hall	musicianship
 time	people
 job	security
 city	gent
@@ -939,7 +934,6 @@ government	warning
 home	entertainment
 buyout	team
 arms	development
-two income	couple
 election	authority
 cash	transfer
 policy	recommendation
@@ -1390,7 +1384,6 @@ concept	car
 chocolate	lab
 cop	show
 energy	output
-public address	system
 acid	damage
 night	crawler
 handling	fee
@@ -1856,7 +1849,6 @@ banking	division
 sport	official
 brick	cabin
 art	law
-home improvement	loan
 year	auction
 development	system
 cash	shortage
@@ -1881,7 +1873,6 @@ equity	infusion
 day	voyage
 poverty	program
 biotech	firm
-couch potato	jock
 railway	service
 tobacco	farmer
 fruit	jam

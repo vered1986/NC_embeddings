@@ -127,7 +127,6 @@ membership	expenditure
 house	demolition
 holiday	period
 advance	ticket
-real estate	loan
 reduction	bill
 government	witness
 automobile	manufacturer
@@ -459,7 +458,6 @@ laser	application
 navy	veteran
 seminary	student
 security	broker
-nursing home	stay
 country	inn
 nominee	account
 year	battle
@@ -1166,7 +1164,6 @@ gold	earring
 patent	expert
 trailer	home
 comeback	bid
-air freight	activity
 security	lawyer
 restaurant	employee
 skull	shape
@@ -1315,7 +1312,6 @@ voting	right
 sham	shipment
 world	economy
 resource	group
-fact finding	team
 currency	earnings
 labour	leader
 oat	bran
@@ -1461,7 +1457,6 @@ collision	course
 technology	market
 currency	system
 data	gathering
-brokerage house	stock
 freshwater	stock
 deputy	leader
 futures	price
@@ -1708,7 +1703,6 @@ selling	spree
 hotel	operation
 jury	instruction
 domain	name
-floating rate	note
 policy	priority
 espionage	investigation
 day	congress
@@ -1896,7 +1890,6 @@ text	book
 computer	communication
 fountain	pen
 shock	wave
-pork barrel	politics
 folk	architecture
 baby	boomer
 pork	barrel
@@ -2405,9 +2398,7 @@ fatality	rate
 excerpt	announcer
 hour	operation
 target	zone
-college sports	reform
 volunteer	worker
-foster child	system
 cruise	liner
 energy	efficiency
 knee	surgery
@@ -2429,7 +2420,6 @@ labor	organizer
 state	debt
 pigeon	ban
 warning	notice
-nursing home	equipment
 security	field
 season	game
 police	barrier
@@ -2476,7 +2466,6 @@ research	site
 data	transfer
 airport	facility
 production	goal
-real estate	agent
 travel	site
 technology	conference
 food	packaging
@@ -2594,7 +2583,6 @@ strip	search
 expiration	date
 civics	lesson
 immigration	lawyer
-stock fund	asset
 woman	voter
 immigration	case
 metal	rack
@@ -2788,7 +2776,6 @@ market	mechanism
 weapon	development
 bureau	director
 point	race
-heavy truck	maker
 watch	production
 reader	question
 relation	problem
@@ -2975,7 +2962,6 @@ year	tradition
 peace	deal
 cancer	rate
 stock	decline
-due process	right
 earnings	disappointment
 bank	guarantee
 army	post
@@ -3039,7 +3025,6 @@ market	opening
 volunteer	army
 brand	switching
 air	conditioner
-real estate	activity
 homeowner	insurance
 bathroom	floor
 chorizo	cube
@@ -3146,7 +3131,6 @@ street	fighting
 town	manager
 trade	system
 funeral	procession
-blood clot	drug
 flight	safety
 urchin	fishing
 town	meeting
@@ -3204,7 +3188,6 @@ gas	market
 family	dilemma
 junk	offering
 civics	text
-fixed income	research
 baby	brother
 coal	region
 future	research
@@ -3435,7 +3418,6 @@ energy	project
 campaign	director
 aviation	equipment
 police	ineptness
-bank teller	network
 fruit	growing
 credibility	gap
 election	program
@@ -3563,7 +3545,6 @@ video	disc
 gardening	tool
 teacher	salary
 policy	shift
-sinking fund	debenture
 university	hospital
 government	issue
 oil	contract
@@ -3599,7 +3580,6 @@ travel	map
 safety	engineer
 research	material
 agency	assets
-palm tree	rustling
 junkyard	blast
 cement	company
 shareholder	group
@@ -3663,7 +3643,6 @@ car	dealership
 retail	unit
 miracle	cure
 crop	price
-income tax	rate
 wire	report
 whirlwind	tour
 survival	rate
@@ -3752,7 +3731,6 @@ kilometers	northwest
 risk	management
 jet	fighter
 funding	source
-reagan era	neglect
 mobility	impairment
 technology	manager
 entertainment	gimmickry
@@ -3880,7 +3858,6 @@ rate	regulation
 production	control
 whale	tongue
 oil	official
-health care	issue
 pine	beetle
 rent	law
 healthcare	reform
@@ -4025,7 +4002,6 @@ tech	company
 text	message
 population	explosion
 lease	agreement
-real estate	developer
 core	expert
 band	leader
 tax	fraud
@@ -4345,7 +4321,6 @@ engineering	system
 drilling	pipe
 packaging	industry
 marketing	skill
-real estate	market
 aid	proposal
 theater	operator
 morning	fixing
@@ -4586,7 +4561,6 @@ banking	office
 oxygen	tank
 racketeering	indictment
 capitalization	figure
-gold mining	issue
 labor	problem
 petroleum	geologist
 food	industry
@@ -4655,7 +4629,6 @@ siege	tactic
 steel	bar
 day	event
 market	commentary
-middle class	life
 government	contract
 drug	cocktail
 electronics	group
@@ -4815,7 +4788,6 @@ door	opener
 furniture	fair
 traffic	delay
 area	hospital
-real estate	business
 gunshot	wound
 market	share
 border	post
@@ -4924,7 +4896,6 @@ health	statistic
 petrochemical	processing
 labor	productivity
 money	rate
-real estate	reform
 security	arm
 cocaine	ingestion
 ton	ship
@@ -5010,7 +4981,6 @@ spending	policy
 health	provider
 golf	resort
 child	adoption
-carbon dioxide	emission
 basketball	court
 successor	state
 broadcast	production
@@ -5267,7 +5237,6 @@ mile	trail
 police	killing
 college	sweetheart
 employment	data
-market system	breakdown
 contract	system
 mariachi	band
 plant	manager
@@ -5319,7 +5288,6 @@ city	department
 oil	group
 bus	trip
 stone	furniture
-interest rate	scenario
 infantry	vehicle
 day	rate
 visa	request
@@ -5463,7 +5431,6 @@ revenue	figure
 investment	capital
 grocery	list
 mile	network
-real estate	bargain
 work	space
 state	bond
 year	ban
@@ -5535,9 +5502,7 @@ sport	coverage
 training	technique
 politburo	member
 vehicle	fleet
-dial tone	delay
 lithium	battery
-air conditioning	unit
 market	level
 home	field
 government	enterprise
@@ -5553,7 +5518,6 @@ procurator	general
 vegetable	basket
 troop	movement
 bronze	statue
-real estate	price
 paper	producer
 university	community
 fan	mail
@@ -5759,7 +5723,6 @@ airport	lounge
 sponsorship	deal
 degree	temperature
 school	administration
-roll call	vote
 assistant	coach
 cancer	patient
 security	brokerage
@@ -5826,7 +5789,6 @@ visa	restriction
 test	flight
 credit	demand
 pop	concert
-staff reduction	saving
 marble	floor
 world	organization
 benzethonium	chloride
@@ -6179,7 +6141,6 @@ transport	spokesman
 machinery	maker
 intelligence	work
 defense	planning
-capital gains	rate
 equipment	purchase
 valet	parking
 catalog	sale
@@ -6230,7 +6191,6 @@ physician	service
 block	grant
 computer	analysis
 information	equipment
-coffee shop	chatter
 coca	plant
 business	issue
 jazz	concert
@@ -6538,7 +6498,6 @@ service	operation
 conservation	project
 office	equipment
 family	support
-box office	receipt
 liberation	struggle
 company	plan
 production	volume
@@ -6598,7 +6557,6 @@ tourist	traffic
 factory	job
 wartime	price
 opposition	activist
-exchange rate	policy
 design	plan
 investment	activity
 percentage	change
@@ -6674,7 +6632,6 @@ health	official
 plant	species
 barrier	island
 neighborhood	life
-fast food	chain
 finance	activity
 toll	income
 executive	power
@@ -6799,7 +6756,6 @@ makeup	artist
 music	director
 insurance	coverage
 cost	containment
-conflict of interest	criticism
 marathon	negotiation
 export	tax
 fashion	house
@@ -6853,7 +6809,6 @@ government	restriction
 state	employee
 land	issue
 dollar	volume
-home building	stock
 student	government
 mass	murderer
 security	concept
@@ -6993,7 +6948,6 @@ fruit	bat
 government	control
 consumer	demand
 market	rumor
-human rights	issue
 acre	north
 opium	production
 banking	firm
@@ -7431,7 +7385,6 @@ honeymoon	period
 tax	code
 league	source
 kidney	patient
-start up	cost
 series	leader
 image	problem
 golf	ball
@@ -7777,7 +7730,6 @@ flight	controller
 defense	strategy
 track	coach
 food	convoy
-thrift industry	regulator
 training	scheme
 business	traffic
 voting	station
@@ -8235,7 +8187,6 @@ railroad	industry
 science	program
 share	deal
 cancer	diagnosis
-strike force	lawyer
 subscriber	satisfaction
 guerrilla	foray
 loan	contract
@@ -8327,13 +8278,11 @@ state	commission
 taxpayer	expense
 investment	information
 election	strategy
-space station	funding
 chimney	dirt
 summer	resort
 state	data
 tax	record
 replacement	player
-small business	supplier
 investor	buying
 street	gang
 jury	tension
@@ -8453,7 +8402,6 @@ core	repeater
 bombing	incident
 growth	trend
 lottery	official
-farm machine	maker
 platoon	commander
 magazine	survey
 aircraft	design
@@ -8962,7 +8910,6 @@ space	system
 cash	purchase
 semifinal	loser
 year	maturity
-bankruptcy law	proceeding
 student	association
 student	killing
 government	candidate
@@ -9025,7 +8972,6 @@ insulation	material
 home	district
 concert	pianist
 climate	change
-health care	overhaul
 health	claim
 license	agreement
 mile	strip
@@ -9068,7 +9014,6 @@ oil	painting
 cost	increase
 sightseeing	tour
 rating	board
-law enforcement	grant
 membership	roll
 market	swing
 company	name
@@ -9494,7 +9439,6 @@ funding	cost
 veto	power
 design	engineer
 traffic	ticket
-real estate	share
 day	forum
 room	rate
 woman	player
@@ -9526,7 +9470,6 @@ air	legislation
 inflation	report
 football	analyst
 water	conservancy
-health care	expert
 investment	structure
 christian	fundamentalist
 party	scene
@@ -9570,7 +9513,6 @@ airport	operator
 chicken	restaurant
 core	rap
 serving	plate
-working girl	mink
 gallery	owner
 perjury	count
 tobacco	plant
@@ -9601,7 +9543,6 @@ cosmetic	industry
 verification	procedure
 aviation	subcommittee
 accident	rate
-assembly line	worker
 fund	firm
 fraud	scheme
 revenue	forecast
@@ -9704,7 +9645,6 @@ liability	coverage
 phone	monopoly
 telephone	usage
 core	opportunity
-three judge	panel
 state	museum
 weather	condition
 injury	problem
@@ -9723,7 +9663,6 @@ reinsurance	company
 ulcer	drug
 water	pipeline
 mystery	writer
-organized crime	activity
 fashion	magazine
 salvage	effort
 jury	tampering
@@ -10633,7 +10572,6 @@ side	street
 restructuring	charge
 mortgage	originator
 bar	fight
-energy cogeneration	facility
 pretax	gain
 supply	house
 street	violence
@@ -10975,7 +10913,6 @@ revenue	decline
 market	regulation
 law	protection
 chief	monitor
-expense account	fudging
 surplus	water
 sales	tax
 duct	tape
@@ -11071,7 +11008,6 @@ government	promise
 gossip	column
 database	confusion
 shoplifting	charge
-program trading	goblin
 wartime	past
 tennis	championship
 budget	accord
@@ -11086,7 +11022,6 @@ bridge	loan
 dawn	raid
 artillery	battery
 mouse	skill
-course correction	advisory
 passenger	anger
 skill	level
 bus	boycott
@@ -11127,7 +11062,6 @@ division	champion
 shock	value
 packing	house
 core	objective
-liquid nitrogen	temperature
 business	center
 rubber	importer
 burglary	charge
@@ -11176,14 +11110,12 @@ marketing	representative
 dollar	cost
 government	salary
 product	manager
-soft drink	volume
 train	crash
 state	lawyer
 medal	standing
 staff	scientist
 motor	nerve
 transition	office
-upper income	neighborhood
 government	guarantee
 quotation	mark
 tanker	truck
@@ -11609,7 +11541,6 @@ settlement	price
 growth	market
 school	uniform
 grape	species
-cable tv	system
 cancer	education
 fare	cut
 security	gain
@@ -11805,7 +11736,6 @@ year	lease
 settlement	process
 bread	price
 government	monopoly
-cod liver	oil
 inch	knife
 debt	moratorium
 training	program
@@ -12112,7 +12042,6 @@ tax	money
 pound	title
 distress	call
 identification	badge
-paper company	takeover
 measurement	system
 election	coverage
 army	vehicle
@@ -12250,7 +12179,6 @@ government	exposure
 music	people
 security	house
 strike	vote
-world class	company
 travel	information
 relay	team
 election	office
@@ -12423,12 +12351,10 @@ test	site
 country	boy
 exhibition	center
 rugby	player
-real estate	interest
 home	turf
 floor	broker
 trout	fishing
 travel	allowance
-classified ad	volume
 research	activity
 alcohol	stain
 giants	fan
@@ -12439,7 +12365,6 @@ immigration	officer
 weight	gain
 brand	recognition
 breast	patient
-capital gains	tax
 chief	torturer
 corn	plant
 recycling	effort
@@ -12522,7 +12447,6 @@ beach	city
 energy	division
 reversal	rate
 state	statistic
-stock market	fear
 bug	damage
 drug	shipment
 age	group
@@ -12767,7 +12691,6 @@ telecom	market
 coffee	grower
 entertainment	concern
 parent	organization
-health care	revision
 peace	broker
 football	respectability
 court	date
@@ -12848,7 +12771,6 @@ distribution	program
 recovery	period
 emissions	target
 banking	system
-front runner	status
 pollution	project
 ocean	temperature
 stadium	project
@@ -13142,7 +13064,6 @@ bread	crumb
 championship	standing
 veteran	hospital
 egg	producer
-free market	advocate
 school	age
 vehicle	emission
 car	culture
@@ -13399,7 +13320,6 @@ state	committee
 software	glitch
 core	matter
 sport	field
-real estate	gain
 capital	city
 bomb	factory
 hotel	property
@@ -13903,7 +13823,6 @@ fall	collection
 military	commander
 star	endorsement
 circulation	gain
-fetal tissue	transplant
 ground	crew
 art	performance
 maximum	bang
@@ -14273,7 +14192,6 @@ study	team
 hospital	bill
 fund	raiser
 business	asset
-capital gains	reform
 character	development
 speciality	chemical
 doctor	credentials
@@ -14467,7 +14385,6 @@ army	doctor
 desktop	computer
 retirement	home
 wine	author
-tax loss	seller
 boy	recruit
 environmentalist	party
 police	detective
@@ -14745,7 +14662,6 @@ election	ballot
 dump	site
 bike	accessory
 storm	flooding
-death sentence	case
 minority	tribe
 banking	organization
 championship	leader
@@ -14987,7 +14903,6 @@ propaganda	department
 majority	share
 assessment	information
 supermarket	group
-spanish language	magazine
 construction	machinery
 witness	testimony
 airport	debt
@@ -15062,7 +14977,6 @@ property	owner
 flagship	product
 spring	election
 rate	guarantee
-gold leaf	inlay
 playoff	spot
 birth	mother
 conduit	security
@@ -15257,7 +15171,6 @@ credit	loss
 heart	ailment
 reform	proposal
 city	people
-stock appreciation	right
 basketball	game
 neighborhood	resident
 house	party
@@ -15339,7 +15252,6 @@ field	equipment
 hospital	executive
 labor	camp
 entertainment	pursuit
-mountain bike	shoe
 practice	time
 child	victim
 apple	tree
@@ -15488,7 +15400,6 @@ art	expert
 leader	meeting
 minute	talk
 reception	center
-egg industry	lobbying
 company	size
 pollution	cleanup
 tank	fire
@@ -16010,7 +15921,6 @@ worker	movement
 share	turnover
 protectionist	sentiment
 family	dispute
-credit card	portfolio
 meningitis	inoculation
 army	man
 runway	show
@@ -16552,7 +16462,6 @@ mail	service
 aircraft	fuel
 trading	business
 newsprint	price
-health care	cost
 government	oversight
 land	security
 lumber	company
@@ -17082,7 +16991,6 @@ fan	fatality
 radio	network
 cigarette	tax
 oil	export
-bond trading	conversation
 cancer	research
 school	aid
 tape	collection
@@ -17666,7 +17574,6 @@ tax	level
 investment	rating
 room	service
 information	booth
-foreign exchange	market
 laboratory	testing
 quiz	show
 summer	movie
@@ -17865,7 +17772,6 @@ advance	sale
 ankle	sprain
 fall	lineup
 aluminum	company
-life insurance	policyholder
 air	strike
 needle	program
 bargaining	table
@@ -17976,7 +17882,6 @@ passenger	door
 street	crime
 magazine	writer
 supply	problem
-root canal	work
 information	site
 tea	forum
 meat	packer
@@ -17986,7 +17891,6 @@ traffic	growth
 risk	group
 mass	organization
 computer	security
-banquet hall	musicianship
 time	people
 job	security
 city	gent
@@ -17999,7 +17903,6 @@ government	warning
 home	entertainment
 buyout	team
 arms	development
-two income	couple
 election	authority
 cash	transfer
 policy	recommendation
@@ -18450,7 +18353,6 @@ concept	car
 chocolate	lab
 cop	show
 energy	output
-public address	system
 acid	damage
 night	crawler
 handling	fee
@@ -18916,7 +18818,6 @@ banking	division
 sport	official
 brick	cabin
 art	law
-home improvement	loan
 year	auction
 development	system
 cash	shortage
@@ -18941,7 +18842,6 @@ equity	infusion
 day	voyage
 poverty	program
 biotech	firm
-couch potato	jock
 railway	service
 tobacco	farmer
 fruit	jam

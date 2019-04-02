@@ -127,7 +127,6 @@ membership	expenditure
 house	demolition
 holiday	period
 advance	ticket
-real estate	loan
 reduction	bill
 government	witness
 automobile	manufacturer
@@ -459,7 +458,6 @@ laser	application
 navy	veteran
 seminary	student
 security	broker
-nursing home	stay
 country	inn
 nominee	account
 year	battle
@@ -1166,7 +1164,6 @@ gold	earring
 patent	expert
 trailer	home
 comeback	bid
-air freight	activity
 security	lawyer
 restaurant	employee
 skull	shape
@@ -1315,7 +1312,6 @@ voting	right
 sham	shipment
 world	economy
 resource	group
-fact finding	team
 currency	earnings
 labour	leader
 oat	bran
@@ -1461,7 +1457,6 @@ collision	course
 technology	market
 currency	system
 data	gathering
-brokerage house	stock
 freshwater	stock
 deputy	leader
 futures	price
@@ -1708,7 +1703,6 @@ selling	spree
 hotel	operation
 jury	instruction
 domain	name
-floating rate	note
 policy	priority
 espionage	investigation
 day	congress
