@@ -50,14 +50,21 @@ class NCParaphraseDatasetReader(DatasetReader):
             logger.info("Reading instances from lines in file at: %s", file_path)
             for line in data_file:
                 example = json.loads(line.strip())
+                nc = example['compound']
 
                 for paraphrase in example['paraphrases']:
-                    yield self.text_to_instance(example['compound'], paraphrase)
+                    instance = self.text_to_instance(nc, paraphrase)
+                    if instance is not None:
+                        yield instance
 
     @overrides
     def text_to_instance(self, nc: str, paraphrase: str) -> Instance:
         tokenized_nc = self._tokenizer.tokenize(nc)
         nc_field = TextField(tokenized_nc, self._token_indexers)
+
+        # Remove non-binary NCs to make it comparable to the other composition functions
+        if nc_field.sequence_length() != 2:
+            return None
 
         tokenized_paraphrase = self._tokenizer.tokenize(paraphrase)
         paraphrase_field = TextField(tokenized_paraphrase, self._token_indexers)

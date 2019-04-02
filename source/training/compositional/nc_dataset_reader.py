@@ -34,6 +34,7 @@ class NCDatasetReader(DatasetReader):
         take longer per batch.  This also allows training with datasets that are too large to fit
         in memory.
     """
+
     def __init__(self,
                  token_indexers: Dict[str, TokenIndexer] = None,
                  lazy: bool = False,
@@ -48,22 +49,26 @@ class NCDatasetReader(DatasetReader):
             logger.info("Reading instances from lines in file at: %s", file_path)
             for line in data_file:
                 nc = line.strip()
-                if not nc or ' ' in nc:
-                    continue
-
                 nc = nc.lower().replace('\t', '_')
                 w1, w2 = nc.split('_')
-                yield self.text_to_instance(nc, w1, w2)
+                instance = self.text_to_instance(nc, w1, w2)
+                if instance is not None:
+                    yield instance
 
     @overrides
     def text_to_instance(self, nc: str, w1: str, w2: str) -> Instance:
         tokenized_nc = self._tokenizer.tokenize(nc)
         nc_field = TextField(tokenized_nc, self._token_indexers)
+
+        # Remove non-binary NCs
+        if nc_field.sequence_length() != 1:
+            return None
+
         tokenized_w1 = self._tokenizer.tokenize(w1)
         w1_field = TextField(tokenized_w1, self._token_indexers)
         tokenized_w2 = self._tokenizer.tokenize(w2)
         w2_field = TextField(tokenized_w2, self._token_indexers)
-        tokenized_nc_seq = self._tokenizer.tokenize(nc.replace('_', ' '))
+        tokenized_nc_seq = self._tokenizer.tokenize(' '.join((w1, w2)))
         nc_seq_field = TextField(tokenized_nc_seq, self._token_indexers)
 
         fields = {'nc': nc_field, 'w1': w1_field, 'w2': w2_field, 'nc_seq': nc_seq_field}
