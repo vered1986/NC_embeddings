@@ -28,6 +28,7 @@ def main():
     ap.add_argument('composition_model_path', help='The composition model file (model.tar.gz)')
     ap.add_argument('dataset', help='The dataset file')
     ap.add_argument('out_vector_file', help='Where to save the npy file')
+    ap.add_argument('embedding_dim', type=int, help='The embedding dimension')
     args = ap.parse_args()
 
     logger.info(f'Loading model from {args.composition_model_path}')
@@ -38,12 +39,20 @@ def main():
 
     logger.info(f'Computing vectors for the noun compounds in {args.dataset}')
     vectors = []
+
     with codecs.open(args.dataset, 'r', 'utf-8') as f_in:
         for line in tqdm.tqdm(f_in):
             nc = line.lower().replace('\t', '_')
             w1, w2 = nc.split('_')
             instance = reader.text_to_instance(nc, w1, w2)
-            vectors.append(predictor.predict_instance(instance)['vector'])
+
+            if instance is None:
+                logger.warn(f'Instance is None for {nc}')
+                curr_vector = np.zeros(args.embedding_dim)
+            else:
+                curr_vector = predictor.predict_instance(instance)['vector']
+
+            vectors.append(curr_vector)
 
     logger.info(f'Saving vectors to {args.out_vector_file}')
     vectors = np.vstack(vectors)

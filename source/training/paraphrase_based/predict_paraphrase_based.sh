@@ -16,7 +16,7 @@ do
                 python -m source.training.compositional.compute_vectors \
                             output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/model.tar.gz \
                             data/ncs_test.txt \
-                            output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/test_vectors &
+                            output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/test_vectors ${dim} &
             done
             wait
         done
