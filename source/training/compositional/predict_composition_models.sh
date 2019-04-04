@@ -14,7 +14,7 @@ do
             for window in "${windows[@]}"
             do
                 python -m source.training.compositional.compute_vectors \
-                            output/distributional/${embeddings}/win${window}/${dim}d/embeddings.txt ${dim} \
+                            output/distributional/${embeddings}/win${window}/${dim}d/embeddings.txt.gz ${dim} \
                             output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/model.tar.gz \
                             data/nc_vocab.txt \
                             output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/embeddings.txt &

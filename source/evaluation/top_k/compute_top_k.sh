@@ -10,7 +10,7 @@ do
     do
         for window in "${windows[@]}"
         do
-            python -m source.evaluation.top_k.distributional.top_k \
+            python -m source.evaluation.top_k.compute_top_k \
                     output/distributional/${embeddings}/win${window}/${dim}d/embeddings.txt.gz \
                     ${dim} \
                     data/ncs_test.txt > output/distributional/${embeddings}/win${window}/${dim}d/test_top_k.txt &
@@ -29,7 +29,7 @@ do
         do
             for window in "${windows[@]}"
             do
-                python -m source.evaluation.top_k.compositional.top_k \
+                python -m source.evaluation.top_k.compute_top_k \
                         output/${algorithm}/${embeddings}/win${window}/${dim}d/embeddings.txt.gz \
                         ${dim} \
                         data/ncs_test.txt --is_compositional > output/${algorithm}/${embeddings}/win${window}/${dim}d/test_top_k.txt &
