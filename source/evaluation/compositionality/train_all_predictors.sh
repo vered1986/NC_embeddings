@@ -10,12 +10,9 @@ do
     do
         for window in "${windows[@]}"
         do
-            predictor.py [-h] [--is_compositional] embedding_path dataset_file
-
-            python -m source.evaluation.top_k.top_k \
+            python -m source.evaluation.compositionality.predictor \
                     output/distributional/${embeddings}/win${window}/${dim}d/embeddings.txt.gz \
-                    ${dim} \
-                    data/ncs_test.txt > output/distributional/${embeddings}/win${window}/${dim}d/test_top_k.txt &
+                    source/evaluation/compositionality/data/reddy2011.tsv > output/distributional/${embeddings}/win${window}/${dim}d/compositionality_results.txt &
         done
         wait
     done
@@ -31,14 +28,13 @@ do
         do
             for window in "${windows[@]}"
             do
-                python -m source.evaluation.top_k.top_k \
-                        output/${algorithm}/${embeddings}/win${window}/${dim}d/embeddings.txt.gz \
-                        ${dim} \
-                        data/ncs_test.txt --is_compositional > output/${algorithm}/${embeddings}/win${window}/${dim}d/test_top_k.txt &
+                python -m source.evaluation.compositionality.predictor \
+                    output/distributional/${embeddings}/win${window}/${dim}d/embeddings.txt.gz \
+                    source/evaluation/compositionality/data/reddy2011.tsv \
+                    --is_compositional > output/distributional/${embeddings}/win${window}/${dim}d/compositionality_results.txt &
             done
             wait
         done
     done
 done
-
 

@@ -36,12 +36,12 @@ def main():
         ])
     logger = logging.getLogger(__name__)
 
-    logger.info('Loading the datasets from {}'.format(args.dataset_prefix))
+    logger.info(f'Loading the datasets from {args.dataset_prefix}')
     train_set = DatasetReader(args.dataset_prefix + '/train.tsv')
     val_set = DatasetReader(args.dataset_prefix + '/val.tsv', label2index=train_set.label2index)
     test_set = DatasetReader(args.dataset_prefix + '/test.tsv', label2index=train_set.label2index)
 
-    logger.info(f'Loading distributional vectors from {args.embedding_path}')
+    logger.info(f'Loading the embeddings from {args.embedding_path}')
     wv, index2word = load_text_embeddings(args.emb_file, args.embedding_dim, normalize=True)
     word2index = {w: i for i, w in enumerate(index2word)}
 
