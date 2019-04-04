@@ -30,7 +30,6 @@ def main():
     ap.add_argument('composition_model_path', help='The composition model file (model.tar.gz)')
     ap.add_argument('nc_vocab', help='The noun compound vocabulary file')
     ap.add_argument('out_vector_file', help='Where to save the npy file')
-    ap.add_argument('embedding_dim', type=int, help='The embedding dimension')
     args = ap.parse_args()
 
     logger.info(f'Loading distributional vectors from {args.orig_emb_file}')
