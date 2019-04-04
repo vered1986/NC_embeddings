@@ -14,6 +14,8 @@ def main():
     ap.add_argument('emb_file', help='The gzipped text embedding file')
     ap.add_argument('embedding_dim', help='The embedding dimension', type=int)
     ap.add_argument('nc_file', help='The test/val set file')
+    ap.add_argument('--is_compositional',
+                    help='Whether the embeddings are from a compositional model', action='store_true')
     args = ap.parse_args()
 
     logger.info(f'Loading distributional vectors from {args.emb_file}')
@@ -22,6 +24,10 @@ def main():
 
     with codecs.open(args.nc_file, 'r', 'utf-8') as f_in:
         ncs = [line.strip().lower().replace('\t', '_') for line in f_in]
+
+    # Add "comp_" before each NC
+    if args.is_compositional:
+        ncs = [f'comp_{nc}' for nc in ncs]
 
     for nc in ncs:
         print(nc)

@@ -1,25 +1,6 @@
-# Command line arguments
-import argparse
-ap = argparse.ArgumentParser()
-ap.add_argument('embedding_path', help='word embeddings to be used for w1 and w2 embeddings')
-ap.add_argument('dataset_prefix', help='path to the train/test/val/rel data')
-ap.add_argument('model_dir', help='where to store the result')
-args = ap.parse_args()
-
-# Log
 import os
-logdir = os.path.abspath(args.model_dir)
-if not os.path.exists(logdir):
-    os.mkdir(logdir)
-
 import logging
-logging.basicConfig(
-    level=logging.DEBUG,
-    handlers=[
-        logging.FileHandler('{}/log.txt'.format(args.model_dir)),
-        logging.StreamHandler()
-    ])
-logger = logging.getLogger(__name__)
+import argparse
 
 import numpy as np
 
@@ -33,6 +14,28 @@ from source.evaluation.classification.evaluation import evaluate, output_predict
 
 
 def main():
+    # Command line arguments
+    ap = argparse.ArgumentParser()
+    ap.add_argument('embedding_path', help='word embeddings to be used for w1 and w2 embeddings')
+    ap.add_argument('dataset_prefix', help='path to the train/test/val/rel data')
+    ap.add_argument('model_dir', help='where to store the result')
+    ap.add_argument('--is_compositional',
+                    help='Whether the embeddings are from a compositional model', action='store_true')
+    args = ap.parse_args()
+
+    # Logging
+    logdir = os.path.abspath(args.model_dir)
+    if not os.path.exists(logdir):
+        os.mkdir(logdir)
+
+    logging.basicConfig(
+        level=logging.DEBUG,
+        handlers=[
+            logging.FileHandler('{}/log.txt'.format(args.model_dir)),
+            logging.StreamHandler()
+        ])
+    logger = logging.getLogger(__name__)
+
     logger.info('Loading the datasets from {}'.format(args.dataset_prefix))
     train_set = DatasetReader(args.dataset_prefix + '/train.tsv')
     val_set = DatasetReader(args.dataset_prefix + '/val.tsv', label2index=train_set.label2index)
@@ -43,9 +46,10 @@ def main():
     word2index = {w: i for i, w in enumerate(index2word)}
 
     logger.info('Generating feature vectors...')
-    train_features = np.vstack([wv[word2index['_'.join((w1, w2))], :] for w1, w2 in train_set.noun_compounds])
-    test_features = np.vstack([wv[word2index['_'.join((w1, w2))], :] for w1, w2 in test_set.noun_compounds])
-    val_features = np.vstack([wv[word2index['_'.join((w1, w2))], :] for w1, w2 in val_set.noun_compounds])
+    prefix = 'comp_' if args.is_compositional else ''
+    train_features = np.vstack([wv[word2index[prefix + '_'.join((w1, w2))], :] for w1, w2 in train_set.noun_compounds])
+    test_features = np.vstack([wv[word2index[prefix + '_'.join((w1, w2))], :] for w1, w2 in test_set.noun_compounds])
+    val_features = np.vstack([wv[word2index[prefix + '_'.join((w1, w2))], :] for w1, w2 in val_set.noun_compounds])
 
     # Tune the hyper-parameters using the validation set
     logger.info('Classifying...')
@@ -55,7 +59,6 @@ def main():
     f1_results = []
     descriptions = []
     models = []
-    all_test_instances = []
 
     for cls in classifiers:
         for reg_c in reg_values:
@@ -77,7 +80,6 @@ def main():
                             format(cls, penalty, reg_c, p, r, f1))
                 f1_results.append(f1)
                 models.append(classifier)
-                all_test_instances.append(val_features)
 
     best_index = np.argmax(f1_results)
     description = descriptions[best_index]
@@ -90,8 +92,7 @@ def main():
 
     # Evaluate on the test set
     logger.info('Evaluation:')
-    test_instances = all_test_instances[best_index]
-    test_pred = classifier.predict(test_instances)
+    test_pred = classifier.predict(test_features)
     precision, recall, f1, support = evaluate(test_set.labels, test_pred, test_set.index2label, do_full_reoprt=True)
     logger.info('Precision: {:.3f}, Recall: {:.3f}, F1: {:.3f}'.format(precision, recall, f1))
 
