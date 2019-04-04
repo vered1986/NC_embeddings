@@ -34,6 +34,7 @@ def main():
 
     logger.info(f'Loading distributional vectors from {args.orig_emb_file}')
     wv, index2word = load_text_embeddings(args.orig_emb_file, args.embedding_dim)
+    wv = wv.tolist()
     index2word = [f'dist_{w}' for w in index2word]
 
     logger.info(f'Loading model from {args.composition_model_path}')
