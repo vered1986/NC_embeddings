@@ -41,7 +41,7 @@ def main():
     model = archive.model
     predictor = Predictor(model, dataset_reader=reader)
 
-    logger.info(f'Computing vectors for the noun compounds in {args.dataset}')
+    logger.info(f'Computing vectors for the noun compounds in {args.nc_vocab}')
     comp_wv, comp_index2word = [], []
 
     with codecs.open(args.nc_vocab, 'r', 'utf-8') as f_in:
