@@ -33,7 +33,8 @@ def main():
     args = ap.parse_args()
 
     logger.info(f'Loading distributional vectors from {args.orig_emb_file}')
-    dist_wv, dist_index2word = load_text_embeddings(args.orig_emb_file, args.embedding_dim)
+    wv, index2word = load_text_embeddings(args.orig_emb_file, args.embedding_dim)
+    index2word = [f'dist_{w}' for w in index2word]
 
     logger.info(f'Loading model from {args.composition_model_path}')
     reader = NCDatasetReader()
@@ -42,7 +43,6 @@ def main():
     predictor = Predictor(model, dataset_reader=reader)
 
     logger.info(f'Computing vectors for the noun compounds in {args.nc_vocab}')
-    comp_wv, comp_index2word = [], []
 
     with codecs.open(args.nc_vocab, 'r', 'utf-8') as f_in:
         nc_vocab = [line.lower().replace('\t', '_') for line in f_in]
@@ -55,17 +55,12 @@ def main():
             logger.warning(f'Instance is None for {nc}')
         else:
             curr_vector = predictor.predict_instance(instance)['vector']
-            comp_index2word.append(nc)
-            comp_wv.append(curr_vector)
-
-    logger.info('Uniting vectors')
-    wv = dist_wv + comp_wv
-    index2word = [f'dist_{w}' for w in dist_index2word] + [f'comp_{w}' for w in comp_index2word]
-    word2index = {w: i for i, w in enumerate(index2word)}
+            index2word.append(f'comp_{nc}')
+            wv.append(curr_vector)
 
     logger.info(f'Writing to {args.out_vector_file}')
     with codecs.open(args.out_vector_file, 'w', 'utf-8') as f_out:
-        for word, curr_vector in zip(word2index, wv):
+        for word, curr_vector in zip(index2word, wv):
             f_out.write(word + ' ' + ' '.join(map(str, list(curr_vector))) + '\n')
 
     archive_file = args.out_vector_file + '.gz'
