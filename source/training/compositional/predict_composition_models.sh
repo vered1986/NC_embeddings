@@ -15,7 +15,7 @@ do
             do
                 python -m source.training.compositional.compute_vectors \
                             output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/model.tar.gz \
-                            data/ncs_vocab.txt \
+                            data/nc_vocab.txt \
                             output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/embeddings.txt ${dim} &
             done
             wait
