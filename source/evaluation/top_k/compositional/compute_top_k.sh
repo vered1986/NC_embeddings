@@ -1,6 +1,6 @@
 #!/bin/bash
 
-declare -a algorithms=(add full_add matrix)
+declare -a algorithms=(compositional/add compositional/full_add compositional/matrix compositional/lstm paraphrase_based/cooccurrence paraphrase_based/backtranslation)
 declare -a emb_algorithms=(word2vec_sg word2vec_cbow glove fasttext_sg fasttext_cbow)
 declare -a windows=(2 5 10)
 declare -a dims=(100 200 300)
@@ -13,11 +13,11 @@ do
         do
             for window in "${windows[@]}"
             do
-                python -m source.evaluation.compositional.top_k \
+                python -m source.evaluation.top_k.compositional.top_k \
                         output/distributional/${embeddings}/win${window}/${dim}d/embeddings.txt.gz \
                         ${dim} \
-                        output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/test_vectors.npy \
-                        data/ncs_test.txt > output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/test_top_k.txt &
+                        output/${algorithm}/${embeddings}/win${window}/${dim}d/embeddings.txt.gz \
+                        data/ncs_test.txt > output/${algorithm}/${embeddings}/win${window}/${dim}d/test_top_k.txt &
             done
             wait
         done

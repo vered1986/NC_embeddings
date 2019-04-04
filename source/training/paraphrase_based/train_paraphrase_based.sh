@@ -14,7 +14,7 @@ do
             for window in "${windows[@]}"
             do
                 allennlp train source/training/paraphrase_based/configurations/${algorithm}/${embeddings}_win${window}_${dim}d.json \
-                -s output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/ \
+                -s output/paraphrase_based/${algorithm}/${embeddings}/win${window}/${dim}d/ \
                 --include-package source &
             done
             wait

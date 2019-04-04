@@ -1,9 +1,8 @@
 import tqdm
 import codecs
+import tarfile
 import logging
 import argparse
-
-import numpy as np
 
 from allennlp.models.archival import load_archive
 from allennlp.predictors.predictor import Predictor
@@ -38,25 +37,24 @@ def main():
     predictor = Predictor(model, dataset_reader=reader)
 
     logger.info(f'Computing vectors for the noun compounds in {args.dataset}')
-    vectors = []
 
-    with codecs.open(args.dataset, 'r', 'utf-8') as f_in:
-        for line in tqdm.tqdm(f_in):
-            nc = line.lower().replace('\t', '_')
-            w1, w2 = nc.split('_')
-            instance = reader.text_to_instance(nc, w1, w2)
+    with codecs.open(args.out_vector_file, 'w', 'utf-8') as f_out:
+        with codecs.open(args.dataset, 'r', 'utf-8') as f_in:
+            for line in tqdm.tqdm(f_in):
+                nc = line.lower().replace('\t', '_')
+                w1, w2 = nc.split('_')
+                instance = reader.text_to_instance(nc, w1, w2)
 
-            if instance is None:
-                logger.warn(f'Instance is None for {nc}')
-                curr_vector = np.zeros(args.embedding_dim)
-            else:
-                curr_vector = predictor.predict_instance(instance)['vector']
+                if instance is None:
+                    logger.warning(f'Instance is None for {nc}')
+                else:
+                    curr_vector = predictor.predict_instance(instance)['vector']
+                    f_out.write(nc + ' ' + ' '.join(map(str, list(curr_vector))) + '\n')
 
-            vectors.append(curr_vector)
-
-    logger.info(f'Saving vectors to {args.out_vector_file}')
-    vectors = np.vstack(vectors)
-    np.save(args.out_vector_file, vectors)
+    archive_file = args.out_vector_file + '.gz'
+    logger.info(f'Gzipping to {archive_file}')
+    with tarfile.open(args.out_vector_file, 'w:gz') as archive:
+        archive.add(args.out_vector_file)
 
 
 if __name__ == '__main__':

@@ -1,0 +1,4 @@
+2018-04-04.11-43-33.vered-laptop exit
+2018-04-04.11-43-49.vered-laptop exit
+2018-04-04.11-44-01.vered-laptop grep '	animal	' train.tsv 
+2018-04-04.11-44-17.vered-laptop grep 'lab	' train.tsv 
