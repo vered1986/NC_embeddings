@@ -5,7 +5,7 @@ import logging
 from itertools import count
 from collections import defaultdict
 
-logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
+logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 
