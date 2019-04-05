@@ -1,6 +1,7 @@
 import random
 random.seed(a=133)
 
+import tqdm
 import codecs
 import logging
 import argparse
@@ -11,13 +12,21 @@ np.random.seed(133)
 from scipy import stats
 from sklearn.metrics import r2_score
 from sklearn.linear_model import LinearRegression
-from source.evaluation.common import load_text_embeddings
+
+from allennlp.models.archival import load_archive
+from allennlp.predictors.predictor import Predictor
+
+from allennlp.data.fields import TextField
+from allennlp.data.instance import Instance
+from allennlp.data.tokenizers import Tokenizer, WordTokenizer
+from allennlp.data.token_indexers import TokenIndexer, SingleIdTokenIndexer
+
 
 
 def main():
     # Command line arguments
     ap = argparse.ArgumentParser()
-    ap.add_argument('embedding_path', help='word embeddings to be used for w1 and w2 embeddings')
+    ap.add_argument('composition_model_path', help='The composition model file (model.tar.gz)')
     ap.add_argument('dataset_file', help='path to the csv file')
     ap.add_argument('--is_compositional',
                     help='Whether the embeddings are from a compositional model', action='store_true')
@@ -35,9 +44,22 @@ def main():
         dataset = { (w1, w2) : tuple(map(float, (w1_score, w2_score, nc_score)))
                     for (w1, w2, w1_score, w2_score, nc_score) in lines }
 
-    logger.info(f'Loading the embeddings from {args.embedding_path}')
-    wv, index2word = load_text_embeddings(args.emb_file, args.embedding_dim, normalize=True)
-    word2index = {w: i for i, w in enumerate(index2word)}
+    logger.info(f'Loading model from {args.composition_model_path}')
+    archive = load_archive(args.composition_model_path)
+    model = archive.model
+    predictor = Predictor(model)
+
+    logger.info('Computing vectors for the noun compounds')
+    nc_to_vec = {}
+
+    for nc in tqdm.tqdm(dataset.keys()):
+        w1, w2 = nc.split('_')
+        instance = text_to_instance(nc, w1, w2)
+
+        if instance is None:
+            logger.warning(f'Instance is None for {nc}')
+        else:
+            nc_to_vec[nc] = predictor.predict_instance(instance)['vector']
 
     logger.info('Training linear regression')
 
@@ -54,11 +76,8 @@ def main():
               [dataset[(w1, w2)][2] for w1, w2 in fold_ncs[test_index]])
              for test_index in range(3)]
 
-    prefix = 'comp_' if args.is_compositional else ''
-    folds = [(np.vstack([wv[word2index[prefix + '_'.join((w1, w2))], :] for w1, w2 in train_instances]),
-              train_gold,
-              np.vstack([wv[word2index[prefix + '_'.join((w1, w2))], :] for w1, w2 in test_instances]),
-              test_gold)
+    folds = [(np.vstack([nc_to_vec['_'.join((w1, w2))] for w1, w2 in train_instances]), train_gold,
+              np.vstack([nc_to_vec['_'.join((w1, w2))] for w1, w2 in test_instances]), test_gold)
              for train_instances, train_gold, test_instances, test_gold in folds]
 
     curr_scores = []
@@ -82,6 +101,27 @@ def evaluate(y_test, y_pred):
     rho = stats.spearmanr(y_test, y_pred)[0]
     rsquared = r2_score(y_test, y_pred)
     return rho, rsquared
+
+
+def text_to_instance(nc: str, w1: str, w2: str):
+    tokenizer = WordTokenizer()
+    token_indexers = {"tokens": SingleIdTokenIndexer()}
+    tokenized_nc = tokenizer.tokenize(nc)
+    nc_field = TextField(tokenized_nc, token_indexers)
+
+    # Remove non-binary NCs
+    if nc_field.sequence_length() != 1:
+        return None
+
+    tokenized_w1 = tokenizer.tokenize(w1)
+    w1_field = TextField(tokenized_w1, token_indexers)
+    tokenized_w2 = tokenizer.tokenize(w2)
+    w2_field = TextField(tokenized_w2, token_indexers)
+    tokenized_nc_seq = tokenizer.tokenize(' '.join((w1, w2)))
+    nc_seq_field = TextField(tokenized_nc_seq, token_indexers)
+
+    fields = {'nc': nc_field, 'w1': w1_field, 'w2': w2_field, 'nc_seq': nc_seq_field}
+    return Instance(fields)
 
 
 if __name__ == '__main__':
