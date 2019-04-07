@@ -15,6 +15,7 @@ from source.training.compositional.composition_model import *
 from source.training.compositional.matrix_similarity import *
 from source.training.compositional.full_add_similarity import *
 
+logging.basicConfig(level=logging.DEBUG, handlers=[logging.StreamHandler()])
 logger = logging.getLogger(__name__)
 
 
