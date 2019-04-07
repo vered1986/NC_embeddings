@@ -44,7 +44,7 @@ def main():
     with codecs.getwriter('utf-8')(gzip.open(args.out_vector_file + '.gz', 'wb')) as f_out:
         logger.info(f'Loading distributional vectors from {args.orig_emb_file}')
         with codecs.getreader('utf-8')(gzip.open(args.orig_emb_file, 'rb')) as f_in:
-            for line in f_in:
+            for line in tqdm.tqdm(f_in):
                 fields = line.strip().split(' ')
                 if len(fields) == args.embedding_dim + 1:
                     f_out.write(f'dist_{line}')
