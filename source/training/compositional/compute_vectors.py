@@ -1,5 +1,4 @@
 import tqdm
-import gzip
 import codecs
 import logging
 import argparse
@@ -25,8 +24,6 @@ def main():
     the noun compounds in the set, and saves the embeddings file.
     """
     ap = argparse.ArgumentParser()
-    ap.add_argument('orig_emb_file', help='The gzipped text embedding file used by the model')
-    ap.add_argument('embedding_dim', help='The embedding dimension', type=int)
     ap.add_argument('composition_model_path', help='The composition model file (model.tar.gz)')
     ap.add_argument('nc_vocab', help='The noun compound vocabulary file')
     ap.add_argument('out_vector_file', help='Where to save the npy file')
@@ -41,15 +38,8 @@ def main():
     model = archive.model
     predictor = Predictor(model, dataset_reader=reader)
 
-    with codecs.getwriter('utf-8')(gzip.open(args.out_vector_file + '.gz', 'wb')) as f_out:
-        logger.info(f'Loading distributional vectors from {args.orig_emb_file}')
-        with codecs.getreader('utf-8')(gzip.open(args.orig_emb_file, 'rb')) as f_in:
-            for line in tqdm.tqdm(f_in):
-                fields = line.strip().split(' ')
-                if len(fields) == args.embedding_dim + 1:
-                    f_out.write(f'dist_{line}')
-
-        logger.info(f'Computing vectors for the noun compounds in {args.nc_vocab}')
+    logger.info(f'Computing vectors for the noun compounds in {args.nc_vocab}')
+    with codecs.open(args.out_vector_file, 'a', 'utf-8') as f_out:
         for nc in tqdm.tqdm(nc_vocab):
             w1, w2 = nc.split('_')
             instance = reader.text_to_instance(nc, w1, w2)

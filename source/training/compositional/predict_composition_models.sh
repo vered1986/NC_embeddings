@@ -13,11 +13,21 @@ do
         do
             for window in "${windows[@]}"
             do
+                (
+
+                # Copy the distributional embeddings and add "dist_" to the beginning of each line
+                gzip -cd output/distributional/${embeddings}/win${window}/${dim}d/embeddings.txt.gz | sed 's/^/dist_/g' > output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/embeddings.txt;
+
+                # Append the compositional embeddings
                 python -m source.training.compositional.compute_vectors \
-                            output/distributional/${embeddings}/win${window}/${dim}d/embeddings.txt.gz ${dim} \
                             output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/model.tar.gz \
                             data/nc_vocab.txt \
-                            output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/embeddings.txt &
+                            output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/embeddings.txt ;
+
+                # Zip
+                gunzip output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/embeddings.txt;
+
+                ) &
             done
             wait
         done
