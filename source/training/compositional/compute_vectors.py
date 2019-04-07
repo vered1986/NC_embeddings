@@ -1,13 +1,12 @@
 import tqdm
+import gzip
 import codecs
-import tarfile
 import logging
 import argparse
 
 from allennlp.models.archival import load_archive
 from allennlp.predictors.predictor import Predictor
 
-from source.evaluation.common import load_text_embeddings
 from source.training.compositional.nc_dataset_reader import NCDatasetReader
 
 # For registration purposes - don't delete
@@ -32,10 +31,8 @@ def main():
     ap.add_argument('out_vector_file', help='Where to save the npy file')
     args = ap.parse_args()
 
-    logger.info(f'Loading distributional vectors from {args.orig_emb_file}')
-    wv, index2word = load_text_embeddings(args.orig_emb_file, args.embedding_dim)
-    wv = wv.tolist()
-    index2word = [f'dist_{w}' for w in index2word]
+    with codecs.open(args.nc_vocab, 'r', 'utf-8') as f_in:
+        nc_vocab = [line.lower().replace('\t', '_') for line in f_in]
 
     logger.info(f'Loading model from {args.composition_model_path}')
     reader = NCDatasetReader()
@@ -43,31 +40,25 @@ def main():
     model = archive.model
     predictor = Predictor(model, dataset_reader=reader)
 
-    logger.info(f'Computing vectors for the noun compounds in {args.nc_vocab}')
+    with codecs.getwriter('utf-8')(gzip.open(args.orig_emb_file + '.gz', 'rb')) as f_out:
 
-    with codecs.open(args.nc_vocab, 'r', 'utf-8') as f_in:
-        nc_vocab = [line.lower().replace('\t', '_') for line in f_in]
+        logger.info(f'Loading distributional vectors from {args.orig_emb_file}')
+        with codecs.getreader('utf-8')(gzip.open(args.orig_emb_file, 'rb')) as f_in:
+            for line in f_in:
+                fields = line.strip().split(' ')
+                if len(fields) == args.embedding_dim + 1:
+                    f_out.write(f'dist_{line}')
 
-    for nc in tqdm.tqdm(nc_vocab):
-        w1, w2 = nc.split('_')
-        instance = reader.text_to_instance(nc, w1, w2)
+        logger.info(f'Computing vectors for the noun compounds in {args.nc_vocab}')
+        for nc in tqdm.tqdm(nc_vocab):
+            w1, w2 = nc.split('_')
+            instance = reader.text_to_instance(nc, w1, w2)
 
-        if instance is None:
-            logger.warning(f'Instance is None for {nc}')
-        else:
-            curr_vector = predictor.predict_instance(instance)['vector']
-            index2word.append(f'comp_{nc}')
-            wv.append(curr_vector)
-
-    logger.info(f'Writing to {args.out_vector_file}')
-    with codecs.open(args.out_vector_file, 'w', 'utf-8') as f_out:
-        for word, curr_vector in zip(index2word, wv):
-            f_out.write(word + ' ' + ' '.join(map(str, list(curr_vector))) + '\n')
-
-    archive_file = args.out_vector_file + '.gz'
-    logger.info(f'Gzipping to {archive_file}')
-    with tarfile.open(args.out_vector_file, 'w:gz') as archive:
-        archive.add(args.out_vector_file)
+            if instance is None:
+                logger.warning(f'Instance is None for {nc}')
+            else:
+                curr_vector = predictor.predict_instance(instance)['vector']
+                f_out.write(f'comp_{nc} ' + ' '.join(map(str, list(curr_vector))) + '\n')
 
 
 if __name__ == '__main__':
