@@ -17,7 +17,7 @@ do
 
             for algorithm in "${algorithms[@]}"
             do
-                cp output/compositional/add/${embeddings}/win${window}/${dim}d/embeddings.txt output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/embeddings.txt;
+                cp output/compositional/add/${embeddings}/win${window}/${dim}d/embeddings.txt output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/embeddings.txt &
             done
         done
     done
@@ -51,7 +51,7 @@ do
         do
             for window in "${windows[@]}"
             do
-                gunzip output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/embeddings.txt &
+                gzip output/compositional/${algorithm}/${embeddings}/win${window}/${dim}d/embeddings.txt &
             done
             wait
         done

@@ -14,7 +14,7 @@ do
         do
             # Copy the distributional embeddings and add "dist_" to the beginning of each line
             gzip -cd output/distributional/${embeddings}/win${window}/${dim}d/embeddings.txt.gz | sed 's/^/dist_/g' > output/paraphrase_based/cooccurrence/${embeddings}/win${window}/${dim}d/embeddings.txt;
-            cp output/paraphrase_based/cooccurrence/${embeddings}/win${window}/${dim}d/embeddings.txt output/paraphrase_based/backtranslation/${embeddings}/win${window}/${dim}d/embeddings.txt;
+            cp output/paraphrase_based/cooccurrence/${embeddings}/win${window}/${dim}d/embeddings.txt output/paraphrase_based/backtranslation/${embeddings}/win${window}/${dim}d/embeddings.txt &
         done
     done
 done
@@ -46,7 +46,7 @@ do
         do
             for window in "${windows[@]}"
             do
-                gunzip output/paraphrase_based/${algorithm}/${embeddings}/win${window}/${dim}d/embeddings.txt &
+                gzip output/paraphrase_based/${algorithm}/${embeddings}/win${window}/${dim}d/embeddings.txt &
             done
             wait
         done
