@@ -40,7 +40,7 @@ def main():
     model = archive.model
     predictor = Predictor(model, dataset_reader=reader)
 
-    with codecs.getwriter('utf-8')(gzip.open(args.orig_emb_file, 'rb')) as f_out:
+    with codecs.getwriter('utf-8')(gzip.open(args.out_vector_file + '.gz', 'rb')) as f_out:
         logger.info(f'Loading distributional vectors from {args.orig_emb_file}')
         with codecs.getreader('utf-8')(gzip.open(args.orig_emb_file, 'rb')) as f_in:
             for line in f_in:
