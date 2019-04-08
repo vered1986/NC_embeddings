@@ -18,7 +18,7 @@ def main():
                     help='Whether the embeddings are from a compositional model', action='store_true')
     args = ap.parse_args()
 
-    logger.info(f'Loading distributional vectors from {args.emb_file}')
+    logger.info(f'Loading vectors from {args.emb_file}')
     wv, index2word = load_text_embeddings(args.emb_file, args.embedding_dim, normalize=True)
     word2index = {w: i for i, w in enumerate(index2word)}
 
