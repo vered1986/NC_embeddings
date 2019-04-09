@@ -47,7 +47,7 @@ def main():
             if instance is None:
                 logger.warning(f'Instance is None for {nc}')
             else:
-                curr_vector = predictor.predict_instance(instance)['vector'][0]
+                curr_vector = predictor.predict_instance(instance)['vector']
                 vector_text = ' '.join(map(str, curr_vector)).strip()
                 f_out.write(f'comp_{nc} {vector_text}\n')
 
