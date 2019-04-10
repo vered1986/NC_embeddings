@@ -43,7 +43,7 @@ def main():
     test_set = DatasetReader(args.dataset_prefix + '/test.tsv', label2index=train_set.label2index)
 
     logger.info(f'Loading the embeddings from {args.embedding_path}')
-    wv, index2word = load_text_embeddings(args.emb_file, args.embedding_dim, normalize=True)
+    wv, index2word = load_text_embeddings(args.embedding_path, args.embedding_dim, normalize=True)
     word2index = {w: i for i, w in enumerate(index2word)}
 
     logger.info('Generating feature vectors...')
