@@ -15,7 +15,7 @@ do
             do
                 mkdir -p output/distributional/${embeddings}/win${window}/${dim}d/classification/${dataset};
                 python -m source.evaluation.classification.classifier \
-                        output/distributional/${embeddings}/win${window}/${dim}d/embeddings.txt.gz \
+                        output/distributional/${embeddings}/win${window}/${dim}d/embeddings.txt.gz ${dim} \
                         source/evaluation/classification/data/${dataset} \
                         output/distributional/${embeddings}/win${window}/${dim}d/classification/${dataset} &
             done
@@ -38,7 +38,7 @@ do
                 do
                     mkdir -p output/${algorithm}/${embeddings}/win${window}/${dim}d/classification/${dataset};
                     python -m source.evaluation.classification.classifier \
-                            output/${algorithm}/${embeddings}/win${window}/${dim}d/embeddings.txt.gz \
+                            output/${algorithm}/${embeddings}/win${window}/${dim}d/embeddings.txt.gz ${dim} \
                             source/evaluation/classification/data/${dataset} \
                             output/${algorithm}/${embeddings}/win${window}/${dim}d/classification/${dataset} \
                             --is_compositional &

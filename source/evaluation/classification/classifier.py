@@ -17,6 +17,7 @@ def main():
     # Command line arguments
     ap = argparse.ArgumentParser()
     ap.add_argument('embedding_path', help='word embeddings to be used for w1 and w2 embeddings')
+    ap.add_argument('embedding_dim', help='The embedding dimension', type=int)
     ap.add_argument('dataset_prefix', help='path to the train/test/val/rel data')
     ap.add_argument('model_dir', help='where to store the result')
     ap.add_argument('--is_compositional',
