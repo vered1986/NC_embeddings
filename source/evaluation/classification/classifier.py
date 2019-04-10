@@ -1,4 +1,5 @@
 import os
+import logging
 import argparse
 
 import numpy as np
@@ -28,14 +29,14 @@ def main():
     if not os.path.exists(logdir):
         os.mkdir(logdir)
 
-    import logging
-    logging.basicConfig(
-        level=logging.DEBUG,
-        handlers=[
-            logging.FileHandler('{}/log.txt'.format(args.model_dir)),
-            logging.StreamHandler()
-        ])
     logger = logging.getLogger(__name__)
+    logger.setLevel(logging.DEBUG)
+    fh = logging.FileHandler(f'{args.model_dir}/log.txt')
+    fh.setLevel(logging.DEBUG)
+    logger.addHandler(fh)
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.DEBUG)
+    logger.addHandler(ch)
 
     logger.info(f'Loading the datasets from {args.dataset_prefix}')
     train_set = DatasetReader(args.dataset_prefix + '/train.tsv')
