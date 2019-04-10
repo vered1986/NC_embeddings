@@ -81,7 +81,7 @@ def main():
                 logger.info('Training with classifier: {}, penalty: {}, c: {:.2f}...'.format(cls, penalty, reg_c))
                 classifier.fit(train_features, train_set.labels)
                 val_pred = classifier.predict(val_features)
-                p, r, f1, _ = evaluate(val_set.labels, val_pred, val_set.index2label, do_full_reoprt=False)
+                p, r, f1, _, _ = evaluate(val_set.labels, val_pred, val_set.index2label)
                 logger.info('Classifier: {}, penalty: {}, c: {:.2f}, precision: {:.3f}, recall: {:.3f}, F1: {:.3f}'.
                             format(cls, penalty, reg_c, p, r, f1))
                 f1_results.append(f1)
@@ -99,8 +99,9 @@ def main():
     # Evaluate on the test set
     logger.info('Evaluation:')
     test_pred = classifier.predict(test_features)
-    precision, recall, f1, support = evaluate(test_set.labels, test_pred, test_set.index2label, do_full_reoprt=True)
+    precision, recall, f1, support, full_report = evaluate(test_set.labels, test_pred, test_set.index2label)
     logger.info('Precision: {:.3f}, Recall: {:.3f}, F1: {:.3f}'.format(precision, recall, f1))
+    logger.info(full_report)
 
     # Write the predictions to a file
     output_predictions(args.model_dir + '/predictions.tsv', test_set.index2label, test_pred,
