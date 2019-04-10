@@ -27,7 +27,7 @@ def main():
     args = ap.parse_args()
 
     with codecs.open(args.nc_vocab, 'r', 'utf-8') as f_in:
-        nc_vocab = [line.strip().lower().replace('\t', '_') for line in f_in]
+        nc_vocab = [line.strip().lower().replace('\t', ' ') for line in f_in]
 
     logger.info(f'Loading model from {args.composition_model_path}')
     reader = NCParaphraseDatasetReader()
