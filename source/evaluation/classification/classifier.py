@@ -36,6 +36,7 @@ def main():
             logging.StreamHandler()
         ])
     logger = logging.getLogger(__name__)
+    logger.setLevel(logging.DEBUG)
 
     logger.info(f'Loading the datasets from {args.dataset_prefix}')
     train_set = DatasetReader(args.dataset_prefix + '/train.tsv')
