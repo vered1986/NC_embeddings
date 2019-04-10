@@ -58,7 +58,7 @@ class NCParaphraseDatasetReader(DatasetReader):
                         yield instance
 
     @overrides
-    def text_to_instance(self, nc: str, paraphrase: str) -> Instance:
+    def text_to_instance(self, nc: str, paraphrase: str = None) -> Instance:
         tokenized_nc = self._tokenizer.tokenize(nc)
         nc_field = TextField(tokenized_nc, self._token_indexers)
 
@@ -66,8 +66,11 @@ class NCParaphraseDatasetReader(DatasetReader):
         if nc_field.sequence_length() != 2:
             return None
 
-        tokenized_paraphrase = self._tokenizer.tokenize(paraphrase)
-        paraphrase_field = TextField(tokenized_paraphrase, self._token_indexers)
+        fields = {'nc': nc_field}
 
-        fields = {'nc': nc_field, 'paraphrase': paraphrase_field}
+        if paraphrase is not None:
+            tokenized_paraphrase = self._tokenizer.tokenize(paraphrase)
+            paraphrase_field = TextField(tokenized_paraphrase, self._token_indexers)
+            fields['paraphrase'] = paraphrase_field
+
         return Instance(fields)
