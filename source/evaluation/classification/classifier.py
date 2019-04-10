@@ -1,5 +1,4 @@
 import os
-import logging
 import argparse
 
 import numpy as np
@@ -29,6 +28,7 @@ def main():
     if not os.path.exists(logdir):
         os.mkdir(logdir)
 
+    import logging
     logging.basicConfig(
         level=logging.DEBUG,
         handlers=[
@@ -36,7 +36,6 @@ def main():
             logging.StreamHandler()
         ])
     logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
 
     logger.info(f'Loading the datasets from {args.dataset_prefix}')
     train_set = DatasetReader(args.dataset_prefix + '/train.tsv')
