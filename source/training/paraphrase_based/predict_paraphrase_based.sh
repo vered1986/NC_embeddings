@@ -28,7 +28,7 @@ do
         do
             for window in "${windows[@]}"
             do
-                python -m source.training.compositional.compute_vectors \
+                python -m source.training.paraphrase_based.compute_vectors \
                             output/paraphrase_based/${algorithm}/${embeddings}/win${window}/${dim}d/model.tar.gz \
                             data/nc_vocab.txt \
                             output/paraphrase_based/${algorithm}/${embeddings}/win${window}/${dim}d/embeddings.txt &
