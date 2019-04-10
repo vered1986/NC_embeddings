@@ -13,6 +13,7 @@ from source.training.compositional.add_similarity import *
 from source.training.compositional.composition_model import *
 from source.training.compositional.matrix_similarity import *
 from source.training.compositional.full_add_similarity import *
+from source.training.paraphrase_based.paraphrase_composition_model import *
 
 logging.basicConfig(level=logging.DEBUG, handlers=[logging.StreamHandler()])
 logger = logging.getLogger(__name__)
