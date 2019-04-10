@@ -6,7 +6,7 @@ import argparse
 from allennlp.models.archival import load_archive
 from allennlp.predictors.predictor import Predictor
 
-from source.training.compositional.nc_dataset_reader import NCDatasetReader
+from source.training.paraphrase_based.nc_paraphrases_dataset_reader import NCParaphraseDatasetReader
 
 # For registration purposes - don't delete
 from source.training.paraphrase_based.paraphrase_composition_model import *
@@ -30,7 +30,7 @@ def main():
         nc_vocab = [line.strip().lower().replace('\t', '_') for line in f_in]
 
     logger.info(f'Loading model from {args.composition_model_path}')
-    reader = NCDatasetReader()
+    reader = NCParaphraseDatasetReader()
     archive = load_archive(args.composition_model_path)
     model = archive.model
     predictor = Predictor(model, dataset_reader=reader)
@@ -38,8 +38,7 @@ def main():
     logger.info(f'Computing vectors for the noun compounds in {args.nc_vocab}')
     with codecs.open(args.out_vector_file, 'a', 'utf-8') as f_out:
         for nc in tqdm.tqdm(nc_vocab):
-            w1, w2 = nc.split('_')
-            instance = reader.text_to_instance(nc, w1, w2)
+            instance = reader.text_to_instance(nc)
 
             if instance is None:
                 logger.warning(f'Instance is None for {nc}')
