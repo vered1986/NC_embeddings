@@ -48,9 +48,13 @@ def main():
 
     logger.info('Generating feature vectors...')
     prefix = 'comp_' if args.is_compositional else ''
-    train_features = np.vstack([wv[word2index[prefix + '_'.join((w1, w2))], :] for w1, w2 in train_set.noun_compounds])
-    test_features = np.vstack([wv[word2index[prefix + '_'.join((w1, w2))], :] for w1, w2 in test_set.noun_compounds])
-    val_features = np.vstack([wv[word2index[prefix + '_'.join((w1, w2))], :] for w1, w2 in val_set.noun_compounds])
+    train_keys, test_keys, val_keys = [[prefix + '_'.join((w1, w2)) for w1, w2 in s.noun_compounds]
+                                       for s in [train_set, test_set, val_set]]
+    vocab = set(list(word2index.keys()))
+    empty = np.zeros(args.embedding_dim)
+    train_features, test_features, val_features = [np.vstack(
+        [wv[word2index[key], :] if key in vocab else empty for key in s])
+        for s in [train_keys, test_keys, val_keys]]
 
     # Tune the hyper-parameters using the validation set
     logger.info('Classifying...')
