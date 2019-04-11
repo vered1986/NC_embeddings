@@ -13,12 +13,13 @@ class DatasetReader:
     """
     A class for reading and processing a noun compound dataset
     """
-    def __init__(self, dataset_file, label2index=None):
+    def __init__(self, dataset_file, label2index=None, exclude_labels=None):
         """
         Read the dataset and convert words to indices
         :param dataset_file: the tab-separated w1, w2, label file
         :param word2index: the embeddings word to index dictionary
         :param label2index: the label dictionary (provide for loading test and validation)
+        :param exclude_labels: labels to exclude from the dataset
         """
         noun_compounds = []
         labels = []
@@ -33,8 +34,10 @@ class DatasetReader:
         with codecs.open(dataset_file, 'r', 'utf-8') as f_in:
             for line in tqdm.tqdm(f_in):
                 w1, w2, label = line.strip().split('\t')
-                noun_compounds.append((w1, w2))
-                labels.append(label2index[label])
+
+                if exclude_labels is None or label not in exclude_labels:
+                    noun_compounds.append((w1, w2))
+                    labels.append(label2index[label])
 
         self.noun_compounds = noun_compounds
         self.labels = labels
