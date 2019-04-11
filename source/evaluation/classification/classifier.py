@@ -99,7 +99,7 @@ def main():
     # Evaluate on the test set
     logger.info('Evaluation:')
     test_pred = classifier.predict(test_features)
-    precision, recall, f1, support, full_report = evaluate(test_set.labels, test_pred, test_set.index2label)
+    precision, recall, f1, support, full_report = evaluate(test_set, test_pred)
     logger.info('Precision: {:.3f}, Recall: {:.3f}, F1: {:.3f}'.format(precision, recall, f1))
     logger.info(full_report)
 

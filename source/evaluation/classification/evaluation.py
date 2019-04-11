@@ -17,14 +17,16 @@ def output_predictions(predictions_file, relations, predictions, test_set_keys, 
             f_out.write('\t'.join([w1, w2, relations[test_labels[i]], relations[predictions[i]]]) + '\n')
 
 
-def evaluate(y_test, y_pred, relations):
+def evaluate(test_set, predictions):
     """
     Evaluate performance of the model on the test set
-    :param y_test: the test set labels.
-    :param y_pred: the predicted values
+    :param test_set: the test set object
+    :param predictions: the predicted values
     :return: mean F1 over all classes
     """
-    full_report = metrics.classification_report(y_test, y_pred, target_names=relations, digits=3)
-    pre, rec, f1, support = metrics.precision_recall_fscore_support(y_test, y_pred, average='weighted')
+    full_report = metrics.classification_report(test_set.labels, predictions,
+                                                labels=range(len(test_set.index2label)),
+                                                target_names=test_set.index2label, digits=3)
+    pre, rec, f1, support = metrics.precision_recall_fscore_support(test_set.labels, predictions, average='weighted')
     return pre, rec, f1, support, full_report
 
