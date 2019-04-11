@@ -45,6 +45,7 @@ def main():
             else:
                 curr_vector = predictor.predict_instance(instance)['vector']
                 vector_text = ' '.join(map(str, curr_vector)).strip()
+                nc = nc.replace(' ', '_')
                 f_out.write(f'comp_{nc} {vector_text}\n')
 
 
