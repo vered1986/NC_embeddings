@@ -19,8 +19,8 @@ do
                         source/evaluation/classification/data/${dataset} \
                         output/distributional/${embeddings}/win${window}/${dim}d/classification/${dataset} &
             done
-            wait
         done
+        wait
     done
 done
 
@@ -43,8 +43,8 @@ do
                             output/${algorithm}/${embeddings}/win${window}/${dim}d/classification/${dataset} \
                             --is_compositional &
                 done
-                wait
             done
+            wait
         done
     done
 done
