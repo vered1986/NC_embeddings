@@ -80,14 +80,15 @@ class CompositionModel(Model):
             neg_paraphrase_enc = self.encoder(neg_paraphrase_emb, neg_paraphrase_mask)
 
             # Compute the loss:
+            normalized_nc_enc = nc_enc / nc_enc.norm(dim=-1, keepdim=True)
+            normalized_paraphrase_enc = paraphrase_enc / paraphrase_enc.norm(dim=-1, keepdim=True)
+            normalized_neg_paraphrase_enc = neg_paraphrase_enc / neg_paraphrase_enc.norm(dim=-1, keepdim=True)
 
             # Similarity to the paraphrase
-            sim_p = (nc_enc * paraphrase_enc).sum(dim=-1)
-            sim_p /= (math.sqrt((nc_enc ** 2).sum(dim=-1)) * math.sqrt((paraphrase_enc ** 2).sum(dim=-1)))
+            sim_p = (normalized_nc_enc * normalized_paraphrase_enc).sum(dim=-1)
 
             # Similarity to a random sampled paraphrase
-            sim_n = (nc_enc * neg_paraphrase_enc).sum(dim=-1)
-            sim_n /= (math.sqrt((nc_enc ** 2).sum(dim=-1)) * math.sqrt((neg_paraphrase_enc ** 2).sum(dim=-1)))
+            sim_n = (normalized_nc_enc * normalized_neg_paraphrase_enc).sum(dim=-1)
 
             loss = self.margin - sim_p + sim_n
             loss = loss * (loss > 0)
