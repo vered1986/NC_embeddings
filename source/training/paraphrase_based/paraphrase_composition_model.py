@@ -1,5 +1,6 @@
-import math
 import torch
+
+import torch.nn.functional as F
 
 from overrides import overrides
 from typing import Dict, Optional
@@ -94,8 +95,7 @@ class CompositionModel(Model):
             # Similarity to a random sampled paraphrase
             sim_n = (normalized_nc_enc * normalized_neg_paraphrase_enc).sum(dim=-1)
 
-            loss = self.margin - sim_p + sim_n
-            loss = loss * (loss > 0)
+            loss = F.relu(self.margin - sim_p + sim_n)
 
             output_dict['loss'] = loss
 
