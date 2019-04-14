@@ -78,11 +78,11 @@ class CompositionModel(Model):
         """
         # Embed
         nc_obs = self.text_field_embedder(nc)
-        w1_emb = self.text_field_embedder(w1)
-        w2_emb = self.text_field_embedder(w2)
 
         # Compose
         if self.composition_function:
+            w1_emb = self.text_field_embedder(w1)
+            w2_emb = self.text_field_embedder(w2)
             nc_cmp = self.composition_function(w1_emb, w2_emb).squeeze()
         else:
             nc_emb = self.text_field_embedder(nc_seq)
