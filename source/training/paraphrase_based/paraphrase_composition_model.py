@@ -1,3 +1,4 @@
+import math
 import torch
 
 from overrides import overrides
@@ -33,7 +34,6 @@ class CompositionModel(Model):
         super(CompositionModel, self).__init__(vocab)
 
         self.text_field_embedder = text_field_embedder
-        self.loss = torch.nn.MSELoss()
         self.metrics = {}
 
         self.encoder = encoder
@@ -43,7 +43,8 @@ class CompositionModel(Model):
     @overrides
     def forward(self,  # type: ignore
                 nc: Dict[str, torch.LongTensor],
-                paraphrase: Dict[str, torch.LongTensor] = None) -> Dict[str, torch.Tensor]:
+                paraphrase: Dict[str, torch.LongTensor] = None,
+                neg_paraphrase: Dict[str, torch.LongTensor] = None) -> Dict[str, torch.Tensor]:
         # pylint: disable=arguments-differ
         """
         Parameters
@@ -52,6 +53,8 @@ class CompositionModel(Model):
             The output of ``TextField.as_array()``.
         paraphrase : Variable, optional (default = None)
             The output of ``TextField.as_array()`` for the paraphrase (given during training).
+        neg_paraphrase: Variable, optional (default = None)
+            The output of ``TextField.as_array()`` for a negative sampled paraphrase (given during training).
 
         Returns
         -------
@@ -72,7 +75,23 @@ class CompositionModel(Model):
             paraphrase_mask = util.get_text_field_mask(paraphrase)
             paraphrase_enc = self.encoder(paraphrase_emb, paraphrase_mask)
 
-            # Compute the loss
-            output_dict['loss'] = self.loss(nc_enc, paraphrase_enc)
+            neg_paraphrase_emb = self.text_field_embedder(neg_paraphrase)
+            neg_paraphrase_mask = util.get_text_field_mask(neg_paraphrase)
+            neg_paraphrase_enc = self.encoder(neg_paraphrase_emb, neg_paraphrase_mask)
+
+            # Compute the loss:
+
+            # Similarity to the paraphrase
+            sim_p = (nc_enc * paraphrase_enc).sum(dim=-1)
+            sim_p /= (math.sqrt((nc_enc ** 2).sum(dim=-1)) * math.sqrt((paraphrase_enc ** 2).sum(dim=-1)))
+
+            # Similarity to a random sampled paraphrase
+            sim_n = (nc_enc * neg_paraphrase_enc).sum(dim=-1)
+            sim_n /= (math.sqrt((nc_enc ** 2).sum(dim=-1)) * math.sqrt((neg_paraphrase_enc ** 2).sum(dim=-1)))
+
+            loss = self.margin - sim_p + sim_n
+            loss = loss * (loss > 0)
+
+            output_dict['loss'] = loss
 
         return output_dict

@@ -1,4 +1,5 @@
 import json
+import random
 import logging
 
 from typing import Dict
@@ -46,19 +47,31 @@ class NCParaphraseDatasetReader(DatasetReader):
 
     @overrides
     def _read(self, file_path):
-        with open(cached_path(file_path), "r") as data_file:
-            logger.info("Reading instances from lines in file at: %s", file_path)
-            for line in data_file:
-                example = json.loads(line.strip())
-                nc = example['compound']
+        logger.info("Reading instances from lines in file at: %s", file_path)
+        with open(cached_path(file_path), "r") as f_in:
+            all_examples = [json.loads(line.strip()) for line in f_in]
 
-                for paraphrase in example['paraphrases']:
-                    instance = self.text_to_instance(nc, paraphrase)
-                    if instance is not None:
-                        yield instance
+        logger.info("Generating negative paraphrases...")
+        constituents = [example['compound'].split(' ') for example in all_examples]
+        all_paraphrases = [p.replace(constituents[i][0], '[w1]').replace(constituents[i][1], '[w2]')
+                           for i, example in enumerate(all_examples)
+                           for p in example['paraphrases']]
+
+        for example in all_examples:
+            nc = example['compound']
+            w1, w2 = nc.split()
+            negative_sample = [p.replace('[w1]', w1).replace('[w2]', w2)
+                               for p in random.sample(all_paraphrases, 10)]
+
+            neg_paraphrase = [p for p in negative_sample if p not in set(example['paraphrases'])][0]
+
+            for paraphrase in example['paraphrases']:
+                instance = self.text_to_instance(nc, paraphrase, neg_paraphrase)
+                if instance is not None:
+                    yield instance
 
     @overrides
-    def text_to_instance(self, nc: str, paraphrase: str = None) -> Instance:
+    def text_to_instance(self, nc: str, paraphrase: str = None, neg_paraphrase: str = None) -> Instance:
         tokenized_nc = self._tokenizer.tokenize(nc)
         nc_field = TextField(tokenized_nc, self._token_indexers)
 
@@ -72,5 +85,9 @@ class NCParaphraseDatasetReader(DatasetReader):
             tokenized_paraphrase = self._tokenizer.tokenize(paraphrase)
             paraphrase_field = TextField(tokenized_paraphrase, self._token_indexers)
             fields['paraphrase'] = paraphrase_field
+
+            tokenized_neg_paraphrase = self._tokenizer.tokenize(neg_paraphrase)
+            neg_paraphrase_field = TextField(tokenized_neg_paraphrase, self._token_indexers)
+            fields['neg_paraphrase'] = neg_paraphrase_field
 
         return Instance(fields)
