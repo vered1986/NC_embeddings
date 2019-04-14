@@ -38,11 +38,14 @@ def main():
     ch.setLevel(logging.DEBUG)
     logger.addHandler(ch)
 
+    exclude_labels = {'LEXICALIZED', 'PERSONAL_NAME', 'PERSONAL_TITLE'}
+
     logger.info(f'Loading the datasets from {args.dataset_prefix}')
-    train_set = DatasetReader(args.dataset_prefix + '/train.tsv',
-                              exclude_labels={'LEXICALIZED', 'PERSONAL_NAME', 'PERSONAL_TITLE'})
-    val_set = DatasetReader(args.dataset_prefix + '/val.tsv', label2index=train_set.label2index)
-    test_set = DatasetReader(args.dataset_prefix + '/test.tsv', label2index=train_set.label2index)
+    train_set = DatasetReader(args.dataset_prefix + '/train.tsv', exclude_labels=exclude_labels)
+    val_set = DatasetReader(args.dataset_prefix + '/val.tsv', label2index=train_set.label2index,
+                            exclude_labels=exclude_labels)
+    test_set = DatasetReader(args.dataset_prefix + '/test.tsv', label2index=train_set.label2index,
+                             exclude_labels=exclude_labels)
 
     logger.info(f'Loading the embeddings from {args.embedding_path}')
     wv, index2word = load_text_embeddings(args.embedding_path, args.embedding_dim, normalize=True)
