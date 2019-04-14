@@ -27,16 +27,20 @@ class CompositionModel(Model):
         Used to embed the ``tokens`` ``TextField`` we get as input to the model.
     encoder : ``Seq2VecEncoder``, optional
         The RNN encoder that returns a vector given a list of vectors.
+    margin: Margin in the loss function
     """
     def __init__(self, vocab: Vocabulary,
                  text_field_embedder: TextFieldEmbedder,
-                 encoder: Optional[Seq2VecEncoder] = None) -> None:
+                 encoder: Optional[Seq2VecEncoder] = None,
+                 margin: Optional[float] = 0.6) -> None:
         super(CompositionModel, self).__init__(vocab)
 
         self.text_field_embedder = text_field_embedder
         self.metrics = {}
 
         self.encoder = encoder
+        self.margin = margin
+
         check_dimensions_match(text_field_embedder.get_output_dim(), encoder.get_input_dim(),
                                "text embedding dim", "encoder input dim")
 
