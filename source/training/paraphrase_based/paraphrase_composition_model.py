@@ -95,7 +95,7 @@ class CompositionModel(Model):
             # Similarity to a random sampled paraphrase
             sim_n = (normalized_nc_enc * normalized_neg_paraphrase_enc).sum(dim=-1)
 
-            loss = F.relu(self.margin - sim_p + sim_n)
+            loss = F.relu(self.margin - sim_p + sim_n).sum(dim=-1)
 
             output_dict['loss'] = loss
 
