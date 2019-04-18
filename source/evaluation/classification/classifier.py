@@ -61,35 +61,61 @@ def main():
         [wv[word2index[key], :] if key in vocab else empty for key in s])
         for s in [train_keys, test_keys, val_keys]]
 
+    # Features with constituents
+    train_features_c, test_features_c, val_features_c = [
+        [(word2index.get(nc.split()[0], -1), word2index.get(nc.split()[1], -1)) for nc in s]
+        for s in [train_keys, test_keys, val_keys]]
+
+    train_features_c, test_features_c, val_features_c = [np.vstack(
+        [np.concatenate([wv[cst1, :] if cst1 > 0 else empty,
+                         wv[cst2, :] if cst2 > 0 else empty])
+         for cst1, cst2 in s])
+        for s in [train_features_c, test_features_c, val_features_c]]
+
     # Tune the hyper-parameters using the validation set
     logger.info('Classifying...')
     reg_values = [0.5, 1, 2, 5, 10]
     penalties = ['l2']
     classifiers = ['logistic', 'svm']
+    include_constituent_embeddings = [True, False]
     f1_results = []
     descriptions = []
     models = []
+    all_include_cst = []
 
     for cls in classifiers:
         for reg_c in reg_values:
             for penalty in penalties:
-                descriptions.append(f'Classifier: {cls}, Penalty: {penalty}, C: {reg_c}')
+                for include_constituents in include_constituent_embeddings:
+                    descriptions.append(f'Classifier: {cls}, Penalty: {penalty}, C: {reg_c}' +
+                                        f', including constituents: {include_constituents}')
 
-                # Create the classifier
-                if cls == 'logistic':
-                    classifier = LogisticRegression(penalty=penalty, C=reg_c,
-                                                    multi_class='multinomial', n_jobs=20, solver='sag')
-                else:
-                    classifier = LinearSVC(penalty=penalty, dual=False, C=reg_c)
+                    # Create the classifier
+                    if cls == 'logistic':
+                        classifier = LogisticRegression(penalty=penalty, C=reg_c,
+                                                        multi_class='multinomial', n_jobs=20, solver='sag')
+                    else:
+                        classifier = LinearSVC(penalty=penalty, dual=False, C=reg_c)
 
-                logger.info('Training with classifier: {}, penalty: {}, c: {:.2f}...'.format(cls, penalty, reg_c))
-                classifier.fit(train_features, train_set.labels)
-                val_pred = classifier.predict(val_features)
-                p, r, f1, _, _ = evaluate(val_set, val_pred)
-                logger.info('Classifier: {}, penalty: {}, c: {:.2f}, precision: {:.3f}, recall: {:.3f}, F1: {:.3f}'.
-                            format(cls, penalty, reg_c, p, r, f1))
-                f1_results.append(f1)
-                models.append(classifier)
+                    logger.info(f'Training with classifier: {cls}, penalty: {penalty}, ' +
+                                'c: {:.2f}, including constituents: {}...'.format(reg_c, include_constituents))
+
+                    # Prepare the features
+                    curr_train_features, curr_val_features, curr_test_features = train_features, val_features, test_features
+
+                    if include_constituents:
+                        curr_train_features = np.concatenate([train_features, train_features_c], axis=-1)
+                        curr_val_features = np.concatenate([val_features, val_features_c], axis=-1)
+
+                    classifier.fit(curr_train_features, train_set.labels)
+                    val_pred = classifier.predict(curr_val_features)
+                    p, r, f1, _, _ = evaluate(val_set, val_pred)
+                    logger.info('Classifier: {cls}, penalty: {penalty}, including constituents: {include_constituents}, ' +
+                                'c: {:.2f}, precision: {:.3f}, recall: {:.3f}, F1: {:.3f}'.
+                                format(reg_c, p, r, f1))
+                    f1_results.append(f1)
+                    all_include_cst.append(include_constituents)
+                    models.append(classifier)
 
     best_index = np.argmax(f1_results)
     description = descriptions[best_index]
@@ -102,6 +128,11 @@ def main():
 
     # Evaluate on the test set
     logger.info('Evaluation:')
+
+    include_constituents = all_include_cst[best_index]
+    if include_constituents:
+        test_features = np.concatenate([test_features, test_features_c], axis=-1)
+
     test_pred = classifier.predict(test_features)
     precision, recall, f1, support, full_report = evaluate(test_set, test_pred)
     logger.info('Precision: {:.3f}, Recall: {:.3f}, F1: {:.3f}'.format(precision, recall, f1))
