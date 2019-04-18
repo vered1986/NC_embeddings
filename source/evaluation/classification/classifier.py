@@ -110,7 +110,7 @@ def main():
                     classifier.fit(curr_train_features, train_set.labels)
                     val_pred = classifier.predict(curr_val_features)
                     p, r, f1, _, _ = evaluate(val_set, val_pred)
-                    logger.info('Classifier: {cls}, penalty: {penalty}, including constituents: {include_constituents}, ' +
+                    logger.info(f'Classifier: {cls}, penalty: {penalty}, including constituents: {include_constituents}, ' +
                                 'c: {:.2f}, precision: {:.3f}, recall: {:.3f}, F1: {:.3f}'.
                                 format(reg_c, p, r, f1))
                     f1_results.append(f1)
