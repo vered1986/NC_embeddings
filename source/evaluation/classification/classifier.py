@@ -63,7 +63,7 @@ def main():
 
     # Features with constituents
     train_features_c, test_features_c, val_features_c = [
-        [(word2index.get(nc.split()[0], -1), word2index.get(nc.split()[1], -1)) for nc in s]
+        [(word2index.get(nc.split('_')[0], -1), word2index.get(nc.split('_')[1], -1)) for nc in s]
         for s in [train_keys, test_keys, val_keys]]
 
     train_features_c, test_features_c, val_features_c = [np.vstack(
