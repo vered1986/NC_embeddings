@@ -91,5 +91,5 @@ class CompositionModel(Model):
 
         # Compute the loss
         output_dict = {'loss': self.loss(nc_obs, nc_cmp),
-                       'vector': nc_cmp}
+                       'vector': nc_cmp.unsqueeze(0)}
         return output_dict

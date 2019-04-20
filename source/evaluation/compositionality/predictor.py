@@ -1,4 +1,5 @@
 import random
+
 random.seed(a=133)
 
 import tqdm
@@ -7,6 +8,7 @@ import logging
 import argparse
 
 import numpy as np
+
 np.random.seed(133)
 
 from scipy import stats
@@ -25,8 +27,10 @@ from allennlp.data.token_indexers import TokenIndexer, SingleIdTokenIndexer
 from source.training.compositional.add_similarity import *
 from source.training.compositional.composition_model import *
 from source.training.compositional.matrix_similarity import *
+from source.training.compositional.nc_dataset_reader import *
 from source.training.compositional.full_add_similarity import *
 from source.training.paraphrase_based.paraphrase_composition_model import *
+from source.training.paraphrase_based.nc_paraphrases_dataset_reader import *
 
 
 def main():
@@ -36,7 +40,13 @@ def main():
     ap.add_argument('dataset_file', help='path to the csv file')
     ap.add_argument('--is_compositional',
                     help='Whether the embeddings are from a compositional model', action='store_true')
+    ap.add_argument('--is_paraphrase_based',
+                    help='Whether the embeddings are from a paraphrase based model', action='store_true')
     args = ap.parse_args()
+
+    if args.is_compositional and args.is_paraphrase_based:
+        raise ValueError('Please select only one of args.is_compositional or args.is_paraphrase_based'
+                         ' or none for distributional.')
 
     # Log
     logging.basicConfig(level=logging.DEBUG, handlers=[logging.StreamHandler()])
@@ -47,27 +57,30 @@ def main():
 
     with codecs.open(args.dataset_file, 'r', 'utf-8') as f_in:
         lines = [line.strip().split('\t') for line in f_in]
-        dataset = { (w1, w2) : tuple(map(float, (w1_score, w2_score, nc_score)))
-                    for (w1, w2, w1_score, w2_score, nc_score) in lines }
+        dataset = {(w1, w2): tuple(map(float, (w1_score, w2_score, nc_score)))
+                   for (w1, w2, w1_score, w2_score, nc_score) in lines}
 
-    logger.info(f'Loading model from {args.composition_model_path}')
-    archive = load_archive(args.composition_model_path)
-    model = archive.model
-    predictor = Predictor(model)
+    if args.is_compositional or args.is_paraphrase_based:
+        logger.info(f'Loading model from {args.composition_model_path}')
+        archive = load_archive(args.composition_model_path)
+        model = archive.model
+        data_reader = NCDatasetReader() if args.is_compositional else NCParaphraseDatasetReader()
+        predictor = Predictor(model, data_reader)
 
-    logger.info('Computing vectors for the noun compounds')
-    nc_to_vec = {}
+        logger.info('Computing vectors for the noun compounds')
+        nc_to_vec = {}
 
-    for nc in tqdm.tqdm(dataset.keys()):
-        w1, w2 = nc.split('_')
-        instance = text_to_instance(nc, w1, w2)
+        for w1, w2 in tqdm.tqdm(dataset.keys()):
+            nc = '_'.join((w1, w2))
+            instance = (nc, w1, w2) if args.is_compositional else (' '.join((w1, w2)), None, None)
+            instance = data_reader.text_to_instance(*instance)
 
-        if instance is None:
-            logger.warning(f'Instance is None for {nc}')
-        else:
-            nc_to_vec[nc] = predictor.predict_instance(instance)['vector']
+            if instance is None:
+                logger.warning(f'Instance is None for {nc}')
+            else:
+                nc_to_vec[nc] = predictor.predict_instance(instance)['vector']
 
-    logger.info('Training linear regression')
+        logger.info('Training linear regression')
 
     # 3-fold cross validation, as in Reddy et al. (2011)
     ncs = list(dataset.keys())
@@ -107,27 +120,6 @@ def evaluate(y_test, y_pred):
     rho = stats.spearmanr(y_test, y_pred)[0]
     rsquared = r2_score(y_test, y_pred)
     return rho, rsquared
-
-
-def text_to_instance(nc: str, w1: str, w2: str):
-    tokenizer = WordTokenizer()
-    token_indexers = {"tokens": SingleIdTokenIndexer()}
-    tokenized_nc = tokenizer.tokenize(nc)
-    nc_field = TextField(tokenized_nc, token_indexers)
-
-    # Remove non-binary NCs
-    if nc_field.sequence_length() != 1:
-        return None
-
-    tokenized_w1 = tokenizer.tokenize(w1)
-    w1_field = TextField(tokenized_w1, token_indexers)
-    tokenized_w2 = tokenizer.tokenize(w2)
-    w2_field = TextField(tokenized_w2, token_indexers)
-    tokenized_nc_seq = tokenizer.tokenize(' '.join((w1, w2)))
-    nc_seq_field = TextField(tokenized_nc_seq, token_indexers)
-
-    fields = {'nc': nc_field, 'w1': w1_field, 'w2': w2_field, 'nc_seq': nc_seq_field}
-    return Instance(fields)
 
 
 if __name__ == '__main__':
