@@ -11,8 +11,8 @@ do
         for window in "${windows[@]}"
         do
             python -m source.evaluation.compositionality.predictor \
-                    output/distributional/${embeddings}/win${window}/${dim}d/embeddings.txt.gz \
-                    source/evaluation/compositionality/data/reddy2011.tsv > output/distributional/${embeddings}/win${window}/${dim}d/compositionality_results.txt &
+                    output/distributional/${embeddings}/win${window}/${dim}d/model.tar.gz \
+                    source/evaluation/compositionality/data/reddy2011.csv > output/distributional/${embeddings}/win${window}/${dim}d/compositionality_results.txt &
         done
         wait
     done
@@ -29,9 +29,9 @@ do
             for window in "${windows[@]}"
             do
                 python -m source.evaluation.compositionality.predictor \
-                    output/distributional/${embeddings}/win${window}/${dim}d/embeddings.txt.gz \
-                    source/evaluation/compositionality/data/reddy2011.tsv \
-                    --is_compositional > output/distributional/${embeddings}/win${window}/${dim}d/compositionality_results.txt &
+                    output/${algorithm}/${embeddings}/win${window}/${dim}d/model.tar.gz \
+                    source/evaluation/compositionality/data/reddy2011.csv \
+                    --is_compositional > output/${algorithm}/${embeddings}/win${window}/${dim}d/compositionality_results.txt &
             done
             wait
         done

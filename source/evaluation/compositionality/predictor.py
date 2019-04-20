@@ -21,6 +21,12 @@ from allennlp.data.instance import Instance
 from allennlp.data.tokenizers import Tokenizer, WordTokenizer
 from allennlp.data.token_indexers import TokenIndexer, SingleIdTokenIndexer
 
+# For registration purposes - don't delete
+from source.training.compositional.add_similarity import *
+from source.training.compositional.composition_model import *
+from source.training.compositional.matrix_similarity import *
+from source.training.compositional.full_add_similarity import *
+from source.training.paraphrase_based.paraphrase_composition_model import *
 
 
 def main():
