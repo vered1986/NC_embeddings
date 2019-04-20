@@ -83,7 +83,7 @@ class CompositionModel(Model):
         if self.composition_function:
             w1_emb = self.text_field_embedder(w1)
             w2_emb = self.text_field_embedder(w2)
-            nc_cmp = self.composition_function(w1_emb, w2_emb).squeeze()
+            nc_cmp = self.composition_function(w1_emb, w2_emb)
         else:
             nc_emb = self.text_field_embedder(nc_seq)
             nc_mask = util.get_text_field_mask(nc_seq)
@@ -91,5 +91,5 @@ class CompositionModel(Model):
 
         # Compute the loss
         output_dict = {'loss': self.loss(nc_obs, nc_cmp),
-                       'vector': nc_cmp.unsqueeze(0)}
+                       'vector': nc_cmp}
         return output_dict

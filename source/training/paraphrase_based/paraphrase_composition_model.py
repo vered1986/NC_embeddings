@@ -72,7 +72,7 @@ class CompositionModel(Model):
         nc_mask = util.get_text_field_mask(nc)
         nc_enc = self.encoder(nc_emb, nc_mask)
 
-        output_dict = {'vector': nc_enc}
+        output_dict = {'vector': nc_enc.unsqueeze(0)}
 
         # Embed and encode the paraphrase
         if paraphrase is not None:

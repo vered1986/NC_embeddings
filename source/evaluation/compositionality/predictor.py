@@ -62,10 +62,10 @@ def main():
 
     if args.is_compositional or args.is_paraphrase_based:
         logger.info(f'Loading model from {args.composition_model_path}')
+        reader = NCDatasetReader() if args.is_compositional else NCParaphraseDatasetReader()
         archive = load_archive(args.composition_model_path)
         model = archive.model
-        data_reader = NCDatasetReader() if args.is_compositional else NCParaphraseDatasetReader()
-        predictor = Predictor(model, data_reader)
+        predictor = Predictor(model, dataset_reader=reader)
 
         logger.info('Computing vectors for the noun compounds')
         nc_to_vec = {}
@@ -73,7 +73,7 @@ def main():
         for w1, w2 in tqdm.tqdm(dataset.keys()):
             nc = '_'.join((w1, w2))
             instance = (nc, w1, w2) if args.is_compositional else (' '.join((w1, w2)), None, None)
-            instance = data_reader.text_to_instance(*instance)
+            instance = reader.text_to_instance(*instance)
 
             if instance is None:
                 logger.warning(f'Instance is None for {nc}')
