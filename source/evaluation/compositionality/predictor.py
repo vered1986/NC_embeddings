@@ -107,7 +107,7 @@ def main():
         curr_scores.append(evaluate(test_gold, test_predictions))
 
     rhos, r_squares = zip(*curr_scores)
-    logger.info('rho = {:.3f}, r_squared = {:.3f}'.format(np.mean(rhos), np.mean(r_squares)))
+    print('rho = {:.3f}, r_squared = {:.3f}'.format(np.mean(rhos), np.mean(r_squares)))
 
 
 def evaluate(y_test, y_pred):
