@@ -48,7 +48,7 @@ def main():
                              exclude_labels=exclude_labels)
 
     logger.info(f'Loading the embeddings from {args.embedding_path}')
-    wv, index2word = load_text_embeddings(args.embedding_path, args.embedding_dim, normalize=True)
+    wv, index2word = load_text_embeddings(args.embedding_path, args.embedding_dim)
     word2index = {w: i for i, w in enumerate(index2word)}
 
     logger.info('Generating feature vectors...')
