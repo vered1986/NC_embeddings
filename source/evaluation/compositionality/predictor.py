@@ -1,7 +1,3 @@
-import random
-
-random.seed(a=133)
-
 import tqdm
 import codecs
 import logging
@@ -12,16 +8,12 @@ import numpy as np
 np.random.seed(133)
 
 from scipy import stats
-from sklearn.metrics import r2_score
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import Ridge
+from sklearn.metrics import make_scorer
+from sklearn.model_selection import cross_validate
 
 from allennlp.models.archival import load_archive
 from allennlp.predictors.predictor import Predictor
-
-from allennlp.data.fields import TextField
-from allennlp.data.instance import Instance
-from allennlp.data.tokenizers import Tokenizer, WordTokenizer
-from allennlp.data.token_indexers import TokenIndexer, SingleIdTokenIndexer
 
 # For registration purposes - don't delete
 from source.training.compositional.add_similarity import *
@@ -80,46 +72,22 @@ def main():
             else:
                 nc_to_vec[nc] = predictor.predict_instance(instance)['vector']
 
-        logger.info('Training linear regression')
+    # Define the dataset
+    X, y = zip(*[((w1, w2), nc_score) for (w1, w2), (w1_score, w2_score, nc_score) in dataset.items()])
+    X = np.vstack([nc_to_vec['_'.join((w1, w2))] for w1, w2 in X])
+    y = np.array(y).reshape(-1, 1)
 
-    # 3-fold cross validation, as in Reddy et al. (2011)
-    ncs = list(dataset.keys())
-    random.shuffle(ncs)
-    fold_ncs = [ncs[i:i + len(ncs) // 3] for i in range(0, len(ncs), len(ncs) // 3)]
-    regressor = LinearRegression(normalize=True, n_jobs=8)
+    # Train the regression and evaluate using 3-fold cross validation, as in Reddy et al. (2011)
+    logger.info('Training linear regression')
 
-    # (train_instances, train_gold, test_instances, test_gold)
-    folds = [([(w1, w2) for index, fold in enumerate(fold_ncs) if index != test_index for (w1, w2) in fold],
-              [dataset[(w1, w2)][2] for index, fold in enumerate(fold_ncs) if index != test_index for (w1, w2) in fold],
-              fold_ncs[test_index],
-              [dataset[(w1, w2)][2] for w1, w2 in fold_ncs[test_index]])
-             for test_index in range(3)]
+    def rho_score(y, y_pred, **kwargs):
+        return stats.spearmanr(y, y_pred)[0]
 
-    folds = [(np.vstack([nc_to_vec['_'.join((w1, w2))] for w1, w2 in train_instances]), train_gold,
-              np.vstack([nc_to_vec['_'.join((w1, w2))] for w1, w2 in test_instances]), test_gold)
-             for train_instances, train_gold, test_instances, test_gold in folds]
+    scoring = {'r_squared': 'r2',
+               'rho': make_scorer(rho_score)}
 
-    curr_scores = []
-
-    for train_features, train_gold, test_features, test_gold in folds:
-        regressor.fit(train_features, train_gold)
-        test_predictions = regressor.predict(test_features)
-        curr_scores.append(evaluate(test_gold, test_predictions))
-
-    rhos, r_squares = zip(*curr_scores)
-    print('rho = {:.3f}, r_squared = {:.3f}'.format(np.mean(rhos), np.mean(r_squares)))
-
-
-def evaluate(y_test, y_pred):
-    """
-    Evaluate performance of the model on the test set
-    :param y_test: the test set values
-    :param y_pred: the predicted values
-    :return: Spearman Rho and Goodness of fit R^2
-    """
-    rho = stats.spearmanr(y_test, y_pred)[0]
-    rsquared = r2_score(y_test, y_pred)
-    return rho, rsquared
+    scores = cross_validate(Ridge(alpha=5), X, y, cv=3, scoring=scoring)
+    print(scores)
 
 
 if __name__ == '__main__':
