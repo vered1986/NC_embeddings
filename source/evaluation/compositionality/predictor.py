@@ -86,7 +86,7 @@ def main():
                'rho': make_scorer(rho_score)}
 
     scores = cross_validate(Ridge(alpha=5), X, y, cv=3, scoring=scoring)
-    print(scores)
+    print('rho = {:.3f}, r_squared = {:.3f}'.format(np.mean(scores['test_rho']), np.mean(scores['test_r_squared'])))
 
 
 if __name__ == '__main__':
