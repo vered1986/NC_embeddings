@@ -86,7 +86,7 @@ def main():
     ncs = list(dataset.keys())
     random.shuffle(ncs)
     fold_ncs = [ncs[i:i + len(ncs) // 3] for i in range(0, len(ncs), len(ncs) // 3)]
-    regressor = LinearRegression()
+    regressor = LinearRegression(normalize=True, n_jobs=8)
 
     # (train_instances, train_gold, test_instances, test_gold)
     folds = [([(w1, w2) for index, fold in enumerate(fold_ncs) if index != test_index for (w1, w2) in fold],
