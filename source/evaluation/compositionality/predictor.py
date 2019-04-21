@@ -37,8 +37,7 @@ def main():
     args = ap.parse_args()
 
     if args.is_compositional and args.is_paraphrase_based:
-        raise ValueError('Please select only one of args.is_compositional or args.is_paraphrase_based'
-                         ' or none for distributional.')
+        raise ValueError('Please select only one of args.is_compositional or args.is_paraphrase_based')
 
     # Log
     logging.basicConfig(level=logging.DEBUG, handlers=[logging.StreamHandler()])
