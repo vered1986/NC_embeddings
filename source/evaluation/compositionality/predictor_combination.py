@@ -68,7 +68,7 @@ def main():
     # Define the dataset
     X, y = zip(*[(np.concatenate(vectors), dataset[nc.split('_')][-1])
                  for nc, vectors in nc_to_vec.items()
-                 if len(vectors) == len(args.model_paths)])
+                 if len(vectors) == len(args.model_paths.split('##'))])
     X = np.vstack(X)
     y = np.array(y).reshape(-1, 1)
 
