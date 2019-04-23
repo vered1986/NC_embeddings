@@ -45,7 +45,7 @@ def main():
 
     nc_to_vec = {'_'.join((w1, w2)): [] for w1, w2 in dataset.keys()}
 
-    for model_path in args.model_paths:
+    for model_path in args.model_paths.split('##'):
         logger.info(f'Loading model from {model_path}')
         reader = NCDatasetReader() if 'compositional' in model_path else NCParaphraseDatasetReader()
         archive = load_archive(model_path)
