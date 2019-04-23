@@ -71,7 +71,7 @@ def main():
                 logger.warning(f'Instance is None for {nc}, adding zero vector instead')
                 nc_to_vec[nc].append(np.zeros(emb_dim))
             else:
-                nc_to_vec[nc].append(predictor.predict_instance(instance)['vector'])
+                nc_to_vec[nc].append(np.array(predictor.predict_instance(instance)['vector']).squeeze())
 
     assert all([len(vectors) == len(model_paths) for vectors in nc_to_vec.values()]), 'not all NCs have all vectors'
     assert all([len({v.shape for v in vectors}) == 1 for vectors in nc_to_vec.values()]), 'vectors with different shapes'
