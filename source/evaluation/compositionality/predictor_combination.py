@@ -1,5 +1,6 @@
 import tqdm
 import codecs
+import logging
 import argparse
 
 import numpy as np
