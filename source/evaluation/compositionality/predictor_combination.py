@@ -56,7 +56,7 @@ def main():
 
         for w1, w2 in tqdm.tqdm(dataset.keys()):
             nc = '_'.join((w1, w2))
-            instance = (nc, w1, w2) if args.is_compositional else (' '.join((w1, w2)), None, None)
+            instance = (nc, w1, w2) if 'compositional' in model_path else (' '.join((w1, w2)), None, None)
             instance = reader.text_to_instance(*instance)
 
             if instance is None:
