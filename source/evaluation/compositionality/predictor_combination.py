@@ -42,36 +42,41 @@ def main():
 
     with codecs.open(args.dataset_file, 'r', 'utf-8') as f_in:
         lines = [line.strip().split('\t') for line in f_in]
-        dataset = {(w1, w2): tuple(map(float, (w1_score, w2_score, nc_score)))
-                   for (w1, w2, w1_score, w2_score, nc_score) in lines}
+        dataset = {'_'.join((w1, w2)): float(nc_score) for (w1, w2, w1_score, w2_score, nc_score) in lines}
 
     nc_to_vec = {'_'.join((w1, w2)): [] for w1, w2 in dataset.keys()}
 
-    for model_path in args.model_paths.split('##'):
-        logger.info(f'Loading model from {model_path}')
-        reader = NCDatasetReader() if 'compositional' in model_path else NCParaphraseDatasetReader()
+    model_paths = args.model_paths.split('##')
+
+    for model_path in model_paths:
+        is_compositional = 'compositional' in model_path
+        model_type = 'compositional' if is_compositional else 'paraphrase based'
         emb_dim = int(re.match('^.*/([0-9]+)d/.*$', model_path).group(1))
+        logger.info(f'Loading model from {model_path}, model type: {model_type}, dimension: {emb_dim}')
+
+        reader = NCDatasetReader() if is_compositional else NCParaphraseDatasetReader()
         archive = load_archive(model_path)
         model = archive.model
         predictor = Predictor(model, dataset_reader=reader)
 
         logger.info('Computing vectors for the noun compounds')
 
-        for w1, w2 in tqdm.tqdm(dataset.keys()):
-            nc = '_'.join((w1, w2))
+        for nc in tqdm.tqdm(dataset.keys()):
+            w1, w2 = nc.split('_')
             instance = (nc, w1, w2) if 'compositional' in model_path else (' '.join((w1, w2)), None, None)
             instance = reader.text_to_instance(*instance)
 
             if instance is None:
-                logger.warning(f'Instance is None for {nc}')
+                logger.warning(f'Instance is None for {nc}, adding zero vector instead')
                 nc_to_vec[nc].append(np.zeros(emb_dim))
             else:
                 nc_to_vec[nc].append(predictor.predict_instance(instance)['vector'])
 
+    assert all([len(vectors) == len(model_paths) for vectors in nc_to_vec.values()]), 'not all NCs have all vectors'
+    assert all([len({v.shape for v in vectors}) == 1 for vectors in nc_to_vec.values()]), 'vectors with different shapes'
+
     # Define the dataset
-    X, y = zip(*[(np.concatenate(vectors, axis=-1), dataset[tuple(nc.split('_'))][-1])
-                 for nc, vectors in nc_to_vec.items()
-                 if len(vectors) == len(args.model_paths.split('##'))])
+    X, y = zip(*[(np.concatenate(vectors, axis=-1), dataset[nc]) for nc, vectors in nc_to_vec.items()])
     X = np.vstack(X)
     y = np.array(y).reshape(-1, 1)
 
