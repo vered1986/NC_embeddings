@@ -1,3 +1,4 @@
+import re
 import tqdm
 import codecs
 import logging
@@ -49,6 +50,7 @@ def main():
     for model_path in args.model_paths.split('##'):
         logger.info(f'Loading model from {model_path}')
         reader = NCDatasetReader() if 'compositional' in model_path else NCParaphraseDatasetReader()
+        emb_dim = int(re.match('^.*/([0-9]+)d/.*$', model_path).group(1))
         archive = load_archive(model_path)
         model = archive.model
         predictor = Predictor(model, dataset_reader=reader)
@@ -62,6 +64,7 @@ def main():
 
             if instance is None:
                 logger.warning(f'Instance is None for {nc}')
+                nc_to_vec[nc].append(np.zeros(emb_dim))
             else:
                 nc_to_vec[nc].append(predictor.predict_instance(instance)['vector'])
 
@@ -78,9 +81,7 @@ def main():
     def rho_score(y, y_pred, **kwargs):
         return stats.spearmanr(y, y_pred)[0]
 
-    scoring = {'r_squared': 'r2',
-               'rho': make_scorer(rho_score)}
-
+    scoring = {'r_squared': 'r2', 'rho': make_scorer(rho_score)}
     scores = cross_validate(Ridge(alpha=5), X, y, cv=3, scoring=scoring)
     print('rho = {:.3f}, r_squared = {:.3f}'.format(np.mean(scores['test_rho']), np.mean(scores['test_r_squared'])))
 
