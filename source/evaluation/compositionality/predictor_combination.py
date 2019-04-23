@@ -66,7 +66,7 @@ def main():
                 nc_to_vec[nc].append(predictor.predict_instance(instance)['vector'])
 
     # Define the dataset
-    X, y = zip(*[(np.concatenate(vectors), (x, y))
+    X, y = zip(*[(np.concatenate(vectors), dataset[nc.split('_')][-1])
                  for nc, vectors in nc_to_vec.items()
                  if len(vectors) == len(args.model_paths)])
     X = np.vstack(X)
