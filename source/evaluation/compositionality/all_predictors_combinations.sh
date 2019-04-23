@@ -16,7 +16,7 @@ do
             do
                 for par_algorithm in "${par_algorithms[@]}"
                 do
-                    out_path="output/combined_predictor/${embeddings}/win${window}/${dim}d/${comp_algorithm}/${par_algorithm}/compositionality_results.txt";
+                    out_path="output/combined_predictor/${embeddings}/win${window}/${dim}d/${comp_algorithm}/${par_algorithm}";
                     echo ${out_path}
                     mkdir -p ${out_path};
 
@@ -25,7 +25,7 @@ do
 
                     python -m   source.evaluation.compositionality.predictor_combination \
                                 ${comp_emb}##${par_emb} \
-                                source/evaluation/compositionality/data/reddy2011.csv > ${out_path} &
+                                source/evaluation/compositionality/data/reddy2011.csv > ${out_path}/compositionality_results.txt &
                 done
             done
             wait

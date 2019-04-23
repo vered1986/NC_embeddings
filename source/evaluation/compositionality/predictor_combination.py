@@ -48,7 +48,7 @@ def main():
     for model_path in args.model_paths:
         logger.info(f'Loading model from {model_path}')
         reader = NCDatasetReader() if 'compositional' in model_path else NCParaphraseDatasetReader()
-        archive = load_archive(args.composition_model_path)
+        archive = load_archive(model_path)
         model = archive.model
         predictor = Predictor(model, dataset_reader=reader)
 
