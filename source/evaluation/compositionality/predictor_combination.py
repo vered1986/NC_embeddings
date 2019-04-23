@@ -9,6 +9,7 @@ import numpy as np
 np.random.seed(133)
 
 from scipy import stats
+from collections import defaultdict
 from sklearn.linear_model import Ridge
 from sklearn.metrics import make_scorer
 from sklearn.model_selection import cross_validate
@@ -44,7 +45,7 @@ def main():
         lines = [line.strip().split('\t') for line in f_in]
         dataset = {'_'.join((w1, w2)): float(nc_score) for (w1, w2, w1_score, w2_score, nc_score) in lines}
 
-    nc_to_vec = {'_'.join((w1, w2)): [] for w1, w2 in dataset.keys()}
+    nc_to_vec = defaultdict(list)
 
     model_paths = args.model_paths.split('##')
 
