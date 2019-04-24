@@ -26,7 +26,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('composition_model_path', help='The composition model file (model.tar.gz)')
     ap.add_argument('nc_vocab', help='The noun compound vocabulary file')
-    ap.add_argument('out_vector_file', help='Where to save the npy file')
+    ap.add_argument('out_vector_file', help='Where to save the gzipped file')
     args = ap.parse_args()
 
     with codecs.open(args.nc_vocab, 'r', 'utf-8') as f_in:

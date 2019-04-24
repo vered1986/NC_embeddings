@@ -22,6 +22,7 @@ do
         done
     done
 done
+wait
 
 declare -a algorithms=(add full_add matrix lstm)
 
