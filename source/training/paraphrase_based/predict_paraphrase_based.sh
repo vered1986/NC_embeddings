@@ -16,7 +16,7 @@ do
                 python -m source.training.paraphrase_based.compute_vectors \
                             output/paraphrase_based/${algorithm}/${embeddings}/win${window}/${dim}d/model.tar.gz \
                             data/nc_vocab.txt \
-                            data/word_vocab \
+                            output/word_vocab \
                             output/paraphrase_based/${algorithm}/${embeddings}/win${window}/${dim}d/embeddings.txt &
             done
         done
