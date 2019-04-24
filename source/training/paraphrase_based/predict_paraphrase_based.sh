@@ -19,8 +19,8 @@ do
                             output/word_vocab \
                             output/paraphrase_based/${algorithm}/${embeddings}/win${window}/${dim}d/embeddings.txt &
             done
+            wait
         done
-        wait
     done
 done
 
