@@ -87,7 +87,7 @@ def main():
                     curr_vector = curr_vector[0]
 
                 vector_text = ' '.join(map(str, curr_vector)).strip()
-                f_out.write(f'comp_{word} {vector_text}\n')
+                f_out.write(f'dist_{word} {vector_text}\n')
 
         logger.info(f'Computing vectors for the noun compounds in {args.nc_vocab}')
         reader = NCParaphraseDatasetReader()
@@ -104,7 +104,7 @@ def main():
 
                 vector_text = ' '.join(map(str, curr_vector)).strip()
                 nc = nc.replace(' ', '_')
-                f_out.write(f'dist_{nc} {vector_text}\n')
+                f_out.write(f'comp_{nc} {vector_text}\n')
 
 
 if __name__ == '__main__':
