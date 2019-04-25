@@ -64,7 +64,7 @@ def main():
     with codecs.open(args.vocab, 'r', 'utf-8') as f_in:
         vocab = [line.strip().lower().replace('\t', ' ') for line in f_in]
 
-    vocab += ['_'.join(nc) for nc in nc_vocab if len(nc) == 2]
+    vocab += ['_'.join(nc.split()) for nc in nc_vocab if len(nc.split()) == 2]
 
     logger.info(f'Loading model from {args.composition_model_path}')
     archive = load_archive(args.composition_model_path)
