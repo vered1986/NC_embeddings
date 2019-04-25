@@ -64,6 +64,8 @@ def main():
     with codecs.open(args.vocab, 'r', 'utf-8') as f_in:
         vocab = [line.strip().lower().replace('\t', ' ') for line in f_in]
 
+    vocab += ['_'.join(nc) for nc in nc_vocab if len(nc) == 2]
+
     logger.info(f'Loading model from {args.composition_model_path}')
     archive = load_archive(args.composition_model_path)
     model = archive.model
@@ -102,7 +104,7 @@ def main():
 
                 vector_text = ' '.join(map(str, curr_vector)).strip()
                 nc = nc.replace(' ', '_')
-                f_out.write(f'comp_{nc} {vector_text}\n')
+                f_out.write(f'dist_{nc} {vector_text}\n')
 
 
 if __name__ == '__main__':
