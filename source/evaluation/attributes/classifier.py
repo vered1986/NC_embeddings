@@ -85,7 +85,7 @@ def main():
                 else:
                     classifier = LinearSVC(penalty=penalty, dual=False, C=reg_c)
 
-                logger.info(f'Training with classifier: {cls}, penalty: {penalty}, c: {:.2f}, ...'.format(reg_c))
+                logger.info('Training with classifier: {cls}, penalty: {penalty}, c: {:.2f}, ...'.format(reg_c))
 
                 classifier.fit(train_features, train_set.labels)
                 val_pred = classifier.predict(val_features)
