@@ -39,9 +39,9 @@ def main():
     logger.addHandler(ch)
 
     logger.info(f'Loading the datasets from {args.dataset_prefix}')
-    train_set = DatasetReader(args.dataset_prefix + '/train.tsv', label2index={'False': 0, 'True': 1})
-    val_set = DatasetReader(args.dataset_prefix + '/val.tsv', label2index=train_set.label2index)
-    test_set = DatasetReader(args.dataset_prefix + '/test.tsv', label2index=train_set.label2index)
+    train_set = DatasetReader(args.dataset_prefix + '_train.tsv', label2index={'False': 0, 'True': 1})
+    val_set = DatasetReader(args.dataset_prefix + '_val.tsv', label2index=train_set.label2index)
+    test_set = DatasetReader(args.dataset_prefix + '_test.tsv', label2index=train_set.label2index)
 
     logger.info(f'Loading the embeddings from {args.embedding_path}')
     wv, index2word = load_text_embeddings(args.embedding_path, args.embedding_dim)
