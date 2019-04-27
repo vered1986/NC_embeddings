@@ -71,19 +71,7 @@ class NCDatasetReaderForWords(DatasetReader):
     def text_to_instance(self, nc: str) -> Instance:
         tokenized_nc = self._tokenizer.tokenize(nc)
         nc_field = TextField(tokenized_nc, self._token_indexers)
-
-        constituents = nc.split('_')
         w1_field, w2_field, nc_seq_field = None, None, None
-
-        if len(constituents) > 0:
-            w1, w2 = constituents
-            tokenized_w1 = self._tokenizer.tokenize(w1)
-            w1_field = TextField(tokenized_w1, self._token_indexers)
-            tokenized_w2 = self._tokenizer.tokenize(w2)
-            w2_field = TextField(tokenized_w2, self._token_indexers)
-            tokenized_nc_seq = self._tokenizer.tokenize(' '.join((w1, w2)))
-            nc_seq_field = TextField(tokenized_nc_seq, self._token_indexers)
-
         fields = {'nc': nc_field, 'w1': w1_field, 'w2': w2_field, 'nc_seq': nc_seq_field}
         return Instance(fields)
 
