@@ -90,7 +90,8 @@ def main():
 
                 classifier.fit(train_features, train_set.labels)
                 val_pred = classifier.predict(val_features)
-                p, r, f1, _ = metrics.precision_recall_fscore_support(val_set.labels, val_pred, pos_label=1)
+                p, r, f1, _ = metrics.precision_recall_fscore_support(val_set.labels, val_pred,
+                                                                      pos_label=1, average='binary')
                 logger.info(f'Classifier: {cls}, penalty: {penalty}, ' +
                             'c: {:.2f}, precision: {:.3f}, recall: {:.3f}, F1: {:.3f}'.
                             format(reg_c, p, r, f1))
@@ -110,7 +111,8 @@ def main():
     logger.info('Evaluation:')
 
     test_pred = classifier.predict(test_features)
-    precision, recall, f1, support = metrics.precision_recall_fscore_support(test_set.labels, test_pred, pos_label=1)
+    precision, recall, f1, support = metrics.precision_recall_fscore_support(test_set.labels, test_pred,
+                                                                             pos_label=1, average='binary')
     logger.info('Precision: {:.3f}, Recall: {:.3f}, F1: {:.3f}'.format(precision, recall, f1))
 
     # Write the predictions to a file
