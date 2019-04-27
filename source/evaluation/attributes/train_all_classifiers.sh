@@ -15,7 +15,7 @@ do
             do
                 mkdir -p output/distributional/${embeddings}/win${window}/${dim}d/attributes/${dataset};
                 python -m source.evaluation.attributes.classifier \
-                        output/distributional/${embeddings}/win${window}/${dim}d/embeddings.txt.gz ${dim} \
+                        output/distributional/${embeddings}/win${window}/${dim}d/embeddings.txt.gz \
                         source/evaluation/attributes/data/${dataset} \
                         output/distributional/${embeddings}/win${window}/${dim}d/attributes/${dataset} &
             done
@@ -38,7 +38,7 @@ do
                 do
                     mkdir -p output/${algorithm}/${embeddings}/win${window}/${dim}d/attributes/${dataset};
                     python -m source.evaluation.attributes.classifier \
-                            output/${algorithm}/${embeddings}/win${window}/${dim}d/embeddings.txt.gz ${dim} \
+                            output/${algorithm}/${embeddings}/win${window}/${dim}d/model.tar.gz \
                             source/evaluation/attributes/data/${dataset} \
                             output/${algorithm}/${embeddings}/win${window}/${dim}d/attributes/${dataset} &
                 done

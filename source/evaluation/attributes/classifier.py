@@ -1,3 +1,4 @@
+import re
 import os
 import logging
 import argparse
@@ -9,16 +10,15 @@ from sklearn.svm import LinearSVC
 from sklearn.externals import joblib
 from sklearn.linear_model import LogisticRegression
 
-from source.evaluation.common import load_text_embeddings
 from source.evaluation.attributes.dataset_reader import DatasetReader
 from source.evaluation.attributes.evaluation import output_predictions
+from source.evaluation.attributes.compute_any_vector import compute_vectors
 
 
 def main():
     # Command line arguments
     ap = argparse.ArgumentParser()
-    ap.add_argument('embedding_path', help='word embeddings to be used for w1 and w2 embeddings')
-    ap.add_argument('embedding_dim', help='The embedding dimension', type=int)
+    ap.add_argument('model_path', help='word embeddings or composition model path')
     ap.add_argument('dataset_prefix', help='path to the train/test/val/rel data')
     ap.add_argument('model_dir', help='where to store the result')
     args = ap.parse_args()
@@ -42,28 +42,17 @@ def main():
     val_set = DatasetReader(args.dataset_prefix + '_val.tsv', label2index=train_set.label2index)
     test_set = DatasetReader(args.dataset_prefix + '_test.tsv', label2index=train_set.label2index)
 
-    logger.info(f'Loading the embeddings from {args.embedding_path}')
-    wv, index2word = load_text_embeddings(args.embedding_path, args.embedding_dim)
-    word2index = {w: i for i, w in enumerate(index2word)}
-    vocab = set(list(word2index.keys()))
+    # Compute the vectors for all the terms
+    logger.info(f'Computing representations...')
+    terms = train_set.noun_compounds + val_set.noun_compounds + test_set.noun_compounds
+    term_to_vec = compute_vectors(args.model_path, terms)
 
     logger.info('Generating feature vectors...')
-    def get_key(term):
-        if 'comp_' + term in vocab:
-            return 'comp_' + term
-        elif 'dist_' + term in vocab:
-            return 'dist_' + term
-        else:
-            return term
-
-    train_keys, test_keys, val_keys = [[get_key(term)
-                                        for term in s.noun_compounds]
-                                       for s in [train_set, test_set, val_set]]
-    vocab = set(list(word2index.keys()))
-    empty = np.zeros(args.embedding_dim)
+    embedding_dim = int(re.match('^.*/([0-9]+)d/.*$', args.model_path).group(1))
+    empty = np.zeros(embedding_dim)
     train_features, test_features, val_features = [np.vstack(
-        [wv[word2index[key], :] if key in vocab else empty for key in s])
-        for s in [train_keys, test_keys, val_keys]]
+        [term_to_vec.get(term, empty) for term in s.noun_compounds])
+        for s in [train_set, test_set, val_set]]
 
     # Tune the hyper-parameters using the validation set
     logger.info('Classifying...')
