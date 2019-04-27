@@ -72,8 +72,9 @@ class NCDatasetReaderForWords(DatasetReader):
         nc_field = TextField(tokenized_nc, self._token_indexers)
         w1_field, w2_field, nc_seq_field = nc_field, nc_field, nc_field
 
-        if '_' in nc:
-            w1, w2 = nc.split('_')
+        constituents = nc.split('_')
+        if len(constituents) == 2:
+            w1, w2 = constituents
             tokenized_w1 = self._tokenizer.tokenize(w1)
             w1_field = TextField(tokenized_w1, self._token_indexers)
             tokenized_w2 = self._tokenizer.tokenize(w2)
