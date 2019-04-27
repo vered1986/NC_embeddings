@@ -20,7 +20,6 @@ from source.training.paraphrase_based.nc_paraphrases_dataset_reader import NCPar
 logging.basicConfig(level=logging.DEBUG, handlers=[logging.StreamHandler()])
 logger = logging.getLogger(__name__)
 
-
 from typing import Dict
 from overrides import overrides
 
@@ -71,7 +70,17 @@ class NCDatasetReaderForWords(DatasetReader):
     def text_to_instance(self, nc: str) -> Instance:
         tokenized_nc = self._tokenizer.tokenize(nc)
         nc_field = TextField(tokenized_nc, self._token_indexers)
-        w1_field, w2_field, nc_seq_field = None, None, None
+        w1_field, w2_field, nc_seq_field = nc_field, nc_field, nc_field
+
+        if '_' in nc:
+            w1, w2 = nc.split('_')
+            tokenized_w1 = self._tokenizer.tokenize(w1)
+            w1_field = TextField(tokenized_w1, self._token_indexers)
+            tokenized_w2 = self._tokenizer.tokenize(w2)
+            w2_field = TextField(tokenized_w2, self._token_indexers)
+            tokenized_nc_seq = self._tokenizer.tokenize(' '.join((w1, w2)))
+            nc_seq_field = TextField(tokenized_nc_seq, self._token_indexers)
+
         fields = {'nc': nc_field, 'w1': w1_field, 'w2': w2_field, 'nc_seq': nc_seq_field}
         return Instance(fields)
 
@@ -110,18 +119,16 @@ def compute_vectors(model_path, terms):
         return term_to_vec
 
     # Paraphrase based
-    elif 'paraphrase_baseed' in model_path:
-        single_word_reader = NCParaphraseDatasetReaderForWords()
-        nc_reader = NCParaphraseDatasetReader()
-        return compute_compositional_vectors(model_path, terms, nc_reader=nc_reader,
-                                             single_word_reader=single_word_reader)
+    elif 'paraphrase_based' in model_path:
+        return compute_compositional_vectors(model_path, terms, nc_reader=NCParaphraseDatasetReader(),
+                                             single_word_reader=NCParaphraseDatasetReaderForWords())
     # Compositional
     else:
         return compute_compositional_vectors(model_path, terms,
                                              single_word_composition_model=SingleWordCompositionModel)
 
 
-def compute_compositional_vectors(model_path, terms, nc_reader=NCDatasetReader(),
+def compute_compositional_vectors(model_path, terms, nc_reader=NCDatasetReaderForWords(),
                                   single_word_reader=NCDatasetReaderForWords(),
                                   single_word_composition_model=None):
     """
@@ -137,7 +144,8 @@ def compute_compositional_vectors(model_path, terms, nc_reader=NCDatasetReader()
 
     single_word_predictor = predictor
     if single_word_composition_model:
-        single_word_predictor = Predictor(single_word_composition_model(model), dataset_reader=single_word_reader)
+        single_word_model = single_word_composition_model(model)
+        single_word_predictor = Predictor(single_word_model, dataset_reader=single_word_reader)
 
     term_to_vec = {}
 
