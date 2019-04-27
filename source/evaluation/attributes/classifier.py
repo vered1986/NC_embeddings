@@ -10,7 +10,7 @@ from sklearn.linear_model import LogisticRegression
 
 from source.evaluation.common import load_text_embeddings
 from source.evaluation.attributes.dataset_reader import DatasetReader
-from source.evaluation.classification.evaluation import evaluate, output_predictions
+from source.evaluation.attributes.evaluation import evaluate, output_predictions
 
 
 def main():
