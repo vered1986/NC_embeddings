@@ -13,9 +13,7 @@ from source.training.compositional.composition_model import *
 from source.training.compositional.matrix_similarity import *
 from source.training.compositional.full_add_similarity import *
 from source.training.paraphrase_based.paraphrase_composition_model import *
-from source.training.compositional.nc_dataset_reader import NCDatasetReader
 from source.training.compositional.composition_model import CompositionModel
-from source.training.paraphrase_based.nc_paraphrases_dataset_reader import NCParaphraseDatasetReader
 
 logging.basicConfig(level=logging.DEBUG, handlers=[logging.StreamHandler()])
 logger = logging.getLogger(__name__)
@@ -46,6 +44,7 @@ class NCParaphraseDatasetReaderForWords(DatasetReader):
 
     @overrides
     def text_to_instance(self, nc: str) -> Instance:
+        nc = nc.replace('_', ' ')
         tokenized_nc = self._tokenizer.tokenize(nc)
         nc_field = TextField(tokenized_nc, self._token_indexers)
         fields = {'nc': nc_field}
@@ -121,7 +120,7 @@ def compute_vectors(model_path, terms):
 
     # Paraphrase based
     elif 'paraphrase_based' in model_path:
-        return compute_compositional_vectors(model_path, terms, nc_reader=NCParaphraseDatasetReader(),
+        return compute_compositional_vectors(model_path, terms, nc_reader=NCParaphraseDatasetReaderForWords(),
                                              single_word_reader=NCParaphraseDatasetReaderForWords())
     # Compositional
     else:
