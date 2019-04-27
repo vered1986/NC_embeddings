@@ -40,8 +40,7 @@ do
                     python -m source.evaluation.attributes.classifier \
                             output/${algorithm}/${embeddings}/win${window}/${dim}d/embeddings.txt.gz ${dim} \
                             source/evaluation/attributes/data/${dataset} \
-                            output/${algorithm}/${embeddings}/win${window}/${dim}d/attributes/${dataset} \
-                            --is_compositional &
+                            output/${algorithm}/${embeddings}/win${window}/${dim}d/attributes/${dataset} &
                 done
             done
             wait

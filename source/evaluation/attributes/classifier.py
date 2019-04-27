@@ -9,7 +9,7 @@ from sklearn.externals import joblib
 from sklearn.linear_model import LogisticRegression
 
 from source.evaluation.common import load_text_embeddings
-from source.evaluation.classification.dataset_reader import DatasetReader
+from source.evaluation.attributes.dataset_reader import DatasetReader
 from source.evaluation.classification.evaluation import evaluate, output_predictions
 
 
@@ -20,8 +20,6 @@ def main():
     ap.add_argument('embedding_dim', help='The embedding dimension', type=int)
     ap.add_argument('dataset_prefix', help='path to the train/test/val/rel data')
     ap.add_argument('model_dir', help='where to store the result')
-    ap.add_argument('--is_compositional',
-                    help='Whether the embeddings are from a compositional model', action='store_true')
     args = ap.parse_args()
 
     # Logging
@@ -46,10 +44,19 @@ def main():
     logger.info(f'Loading the embeddings from {args.embedding_path}')
     wv, index2word = load_text_embeddings(args.embedding_path, args.embedding_dim)
     word2index = {w: i for i, w in enumerate(index2word)}
+    vocab = set(list(word2index.keys()))
 
     logger.info('Generating feature vectors...')
-    prefix = 'comp_' if args.is_compositional else ''
-    train_keys, test_keys, val_keys = [[prefix + '_'.join((w1, w2)) for w1, w2 in s.noun_compounds]
+    def get_key(term):
+        if 'comp_' + term in vocab:
+            return 'comp_' + term
+        elif 'dist_' + term in vocab:
+            return 'dist_' + term
+        else:
+            return term
+
+    train_keys, test_keys, val_keys = [[get_key(term)
+                                        for term in s.noun_compounds]
                                        for s in [train_set, test_set, val_set]]
     vocab = set(list(word2index.keys()))
     empty = np.zeros(args.embedding_dim)
