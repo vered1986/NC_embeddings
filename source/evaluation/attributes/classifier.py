@@ -4,13 +4,14 @@ import argparse
 
 import numpy as np
 
+from sklearn import metrics
 from sklearn.svm import LinearSVC
 from sklearn.externals import joblib
 from sklearn.linear_model import LogisticRegression
 
 from source.evaluation.common import load_text_embeddings
 from source.evaluation.attributes.dataset_reader import DatasetReader
-from source.evaluation.attributes.evaluation import evaluate, output_predictions
+from source.evaluation.attributes.evaluation import output_predictions
 
 
 def main():
@@ -89,7 +90,7 @@ def main():
 
                 classifier.fit(train_features, train_set.labels)
                 val_pred = classifier.predict(val_features)
-                p, r, f1, _, _ = evaluate(val_set, val_pred)
+                p, r, f1, _ = metrics.precision_recall_fscore_support(val_set.labels, val_pred, pos_label=1)
                 logger.info(f'Classifier: {cls}, penalty: {penalty}, ' +
                             'c: {:.2f}, precision: {:.3f}, recall: {:.3f}, F1: {:.3f}'.
                             format(reg_c, p, r, f1))
@@ -109,9 +110,8 @@ def main():
     logger.info('Evaluation:')
 
     test_pred = classifier.predict(test_features)
-    precision, recall, f1, support, full_report = evaluate(test_set, test_pred)
+    precision, recall, f1, support = metrics.precision_recall_fscore_support(test_set.labels, test_pred, pos_label=1)
     logger.info('Precision: {:.3f}, Recall: {:.3f}, F1: {:.3f}'.format(precision, recall, f1))
-    logger.info(full_report)
 
     # Write the predictions to a file
     output_predictions(args.model_dir + '/predictions.tsv', test_set.index2label, test_pred,
