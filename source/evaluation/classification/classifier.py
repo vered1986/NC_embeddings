@@ -47,14 +47,14 @@ def main():
 
     # Compute the vectors for all the terms
     logger.info('Computing representations...')
-    terms = train_set.noun_compounds + val_set.noun_compounds + test_set.noun_compounds
-    term_to_vec = compute_vectors(args.in_model_path, terms)
+    ncs = ['_'.join(nc) for nc in train_set.noun_compounds + val_set.noun_compounds + test_set.noun_compounds]
+    nc_to_vec = compute_vectors(args.in_model_path, ncs)
 
     logger.info('Generating feature vectors...')
     embedding_dim = int(re.match('^.*/([0-9]+)d/.*$', args.out_model_dir).group(1))
     empty = np.zeros(embedding_dim)
     train_features, test_features, val_features = [np.vstack(
-        [term_to_vec.get('_'.join(nc), empty) for nc in s.noun_compounds])
+        [nc_to_vec.get('_'.join(nc), empty) for nc in s.noun_compounds])
         for s in [train_set, test_set, val_set]]
 
     # Tune the hyper-parameters using the validation set
