@@ -10,9 +10,9 @@ from sklearn.svm import LinearSVC
 from sklearn.externals import joblib
 from sklearn.linear_model import LogisticRegression
 
+from source.evaluation.compute_any_vector import compute_vectors
 from source.evaluation.attributes.dataset_reader import DatasetReader
 from source.evaluation.attributes.evaluation import output_predictions
-from source.evaluation.attributes.compute_any_vector import compute_vectors
 
 
 def main():
@@ -43,7 +43,7 @@ def main():
     test_set = DatasetReader(args.dataset_prefix + '_test.tsv', label2index=train_set.label2index)
 
     # Compute the vectors for all the terms
-    logger.info(f'Computing representations...')
+    logger.info('Computing representations...')
     terms = train_set.noun_compounds + val_set.noun_compounds + test_set.noun_compounds
     term_to_vec = compute_vectors(args.model_path, terms)
 
