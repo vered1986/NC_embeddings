@@ -48,7 +48,7 @@ def main():
     # Compute the vectors for all the terms
     logger.info('Computing representations...')
     terms = train_set.noun_compounds + val_set.noun_compounds + test_set.noun_compounds
-    term_to_vec = compute_vectors(args.out_model_dir, terms)
+    term_to_vec = compute_vectors(args.in_model_path, terms)
 
     logger.info('Generating feature vectors...')
     embedding_dim = int(re.match('^.*/([0-9]+)d/.*$', args.out_model_dir).group(1))
