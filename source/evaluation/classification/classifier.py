@@ -54,7 +54,7 @@ def main():
     embedding_dim = int(re.match('^.*/([0-9]+)d/.*$', args.out_model_dir).group(1))
     empty = np.zeros(embedding_dim)
     train_features, test_features, val_features = [np.vstack(
-        [term_to_vec.get(nc, empty) for nc in s.noun_compounds])
+        [term_to_vec.get('_'.join(nc), empty) for nc in s.noun_compounds])
         for s in [train_set, test_set, val_set]]
 
     # Tune the hyper-parameters using the validation set
