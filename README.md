@@ -1,4 +1,4 @@
-## Comparison between various Noun Compound Embeddings 
+## A Systematic Comparison of English Noun Compound Representations
 
 This repository contains the code used in the paper "A Systematic Comparison of English Noun Compound Representations" in the MWE workshop @ ACL 2019. 
 It can be used to train various types of noun compound embeddings and evaluate them on several task. 
