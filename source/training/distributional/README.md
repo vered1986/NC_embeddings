@@ -12,8 +12,7 @@ noun compounds as single tokens,
 considering also inflectional variants such as plurality: 
 
 ```
-python training/distributional/preprocessing/extract_ngrams_and_windows.py \
-        output/en_corpus data/nc_vocab.txt; 
+python -m training/distributional/preprocessing/extract_ngrams_and_windows output/en_corpus data/nc_vocab.txt
 ```
 
 ## 2. Training Embeddings
