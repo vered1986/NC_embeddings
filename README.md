@@ -56,7 +56,7 @@ The noun compound embeddings were evaluated on the following tasks:
 
 ### Citation
 
-If you use this code for a scientific research, please cite the following paper:
+If you used this code in your publication, please cite the following paper:
 
 ```
 @inproceedings{shwartz-2019-nc_embeddings,
