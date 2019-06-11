@@ -15,7 +15,7 @@ def main():
     ap.add_argument('embedding_dim', help='The embedding dimension', type=int)
     ap.add_argument('nc_file', help='The test/val set file')
     ap.add_argument('--is_compositional',
-                    help='Whether the embeddings are from a compositional model', action='store_true')
+                    help='Whether the embeddings are from a compositional/paraphrase-based model', action='store_true')
     args = ap.parse_args()
 
     logger.info(f'Loading vectors from {args.emb_file}')

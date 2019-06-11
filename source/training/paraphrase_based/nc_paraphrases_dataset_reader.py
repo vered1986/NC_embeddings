@@ -81,11 +81,13 @@ class NCParaphraseDatasetReader(DatasetReader):
 
         fields = {'nc': nc_field}
 
+        # During training, we minimize the distance to the paraphrase
         if paraphrase is not None:
             tokenized_paraphrase = self._tokenizer.tokenize(paraphrase)
             paraphrase_field = TextField(tokenized_paraphrase, self._token_indexers)
             fields['paraphrase'] = paraphrase_field
 
+            # Negative sampled paraphrase to move away from
             tokenized_neg_paraphrase = self._tokenizer.tokenize(neg_paraphrase)
             neg_paraphrase_field = TextField(tokenized_neg_paraphrase, self._token_indexers)
             fields['neg_paraphrase'] = neg_paraphrase_field
