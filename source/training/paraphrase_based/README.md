@@ -1,6 +1,6 @@
 # Paraphrase-based Embeddings
 
-Learning vectors by minimizing their distance to the vectors of paraphrases.
+Learning vectors by minimizing their distance to the vectors of their paraphrases.
 
 The paraphrase based methods rely on the distributional vectors 
 of the noun compound constituents. 
